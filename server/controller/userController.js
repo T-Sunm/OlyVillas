@@ -17,3 +17,35 @@ export const createUser = asyncHandler(async (req, res) => {
     });
   }
 });
+export const bookVisit = asyncHandler(async (req, res) => {
+  const { email, date } = req.body;
+  const { id: idVilla } = req.params;
+
+  try {
+    const alreadyBooked = await prisma.user.findUnique({
+      where: { email: email },
+      // hàm select giúp lấy collect mà mình muốn ,
+      // lấy collect nào thì đặt nó bằng true
+      select: { bookedVisits: true },
+    });
+    if (
+      // some() được sử dụng để kiểm tra xem có ít nhất một phần tử trong mảng thỏa mãn một điều kiện nào đó
+      alreadyBooked.bookedVisits.some((IdvillaBook) => IdvillaBook === idVilla)
+    )
+      res.status(400).json({ message: "This Villa you already booked" });
+    else {
+      const user = await prisma.user.update({
+        where: {
+          email: email,
+        },
+        data: {
+          // hàm push của prisma sử dụng để đẩy các giá trị đến cuối danh sách
+          bookedVisits: { push: { idVilla, date } },
+        },
+      });
+      res.send("your visit is booked successfully");
+    }
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});

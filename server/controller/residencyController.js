@@ -35,3 +35,26 @@ export const createResidency = asyncHandler(async (req, res) => {
     throw new Error(err.message);
   }
 });
+
+export const getAllResidencies = asyncHandler(async (req, res) => {
+  const residencies = await prisma.residency.findMany({
+    // orderBy là sắp xếp
+    //  sắp xếp theo thời gian đăng giảm dần
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  res.send(residencies);
+});
+
+export const getResidency = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  try {
+    const residency = await prisma.residency.findUnique({
+      where: { id: id },
+    });
+    res.send(residency);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
