@@ -49,3 +49,16 @@ export const bookVisit = asyncHandler(async (req, res) => {
     throw new Error(error.message);
   }
 });
+
+export const getAllVisit = (req, res) => {
+  const { email } = req.body;
+  try {
+    const visitVillas = prisma.user.findUnique({
+      where: { email: email },
+      select: bookVisit,
+    });
+    res.status(200).send(visitVillas);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
