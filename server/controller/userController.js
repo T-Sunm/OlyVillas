@@ -50,15 +50,15 @@ export const bookVisit = asyncHandler(async (req, res) => {
   }
 });
 
-export const getAllVisit = (req, res) => {
+export const getAllVisit = asyncHandler(async (req, res) => {
   const { email } = req.body;
   try {
-    const visitVillas = prisma.user.findUnique({
+    const visitVillas = await prisma.user.findUnique({
       where: { email: email },
-      select: bookVisit,
+      select: { bookedVisits: true },
     });
     res.status(200).send(visitVillas);
   } catch (error) {
     throw new Error(error.message);
   }
-};
+});
