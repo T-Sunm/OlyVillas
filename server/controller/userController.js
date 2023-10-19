@@ -62,3 +62,26 @@ export const getAllVisit = asyncHandler(async (req, res) => {
     throw new Error(error.message);
   }
 });
+
+export const cancelBooking = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  const { id: idVilla } = req.params;
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
+  const bookVisitIndex = user.bookedVisits.findIndex(
+    (bookVisit) => bookVisit.idVilla === idVilla
+  );
+  if (bookVisitIndex === -1) {
+    res.status(404).json({ message: "Booking not found" });
+  } else {
+    user.bookedVisits.splice(bookVisitIndex, 1);
+    await prisma.user.update({
+      where: { email: email },
+      data: {
+        bookedVisits: user.bookedVisits,
+      },
+    });
+    res.send("Booking cancelled successfully");
+  }
+});
