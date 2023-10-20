@@ -85,3 +85,41 @@ export const cancelBooking = asyncHandler(async (req, res) => {
     res.send("Booking cancelled successfully");
   }
 });
+
+export const toFav = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  const { id: VillasId } = req.params;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    // nếu đã thích rồi thì bỏ thích
+    if (user.favResidenciesID.includes(VillasId)) {
+      const updateUser = await prisma.user.update({
+        where: { email },
+        data: {
+          favResidenciesID: {
+            set: user.favResidenciesID.filter((favId) => favId !== VillasId),
+          },
+        },
+      });
+      res.send({ message: "Removed from favorites", user: updateUser });
+    }
+    // nếu chưa thích thì thích
+    else {
+      const updateUser = await prisma.user.update({
+        where: { email },
+        data: {
+          favResidenciesID: {
+            push: VillasId,
+          },
+        },
+      });
+      res.send({ message: "Updated favourites", user: updateUser });
+    }
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
