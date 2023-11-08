@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --primary: #1f3e72;
   --secondary: rgba(255, 255, 255, 0.78);
@@ -7,6 +11,8 @@
   --blue: #4066ff;
   --lightBlue: #eeeeff;
   --shadow: 0px 23px 21px -8px rgba(136, 160, 255, 0.25);
+  --pink: #FF385C;
+  --yellow: #DFCAC5;
 }
 
 * {
@@ -16,10 +22,12 @@
   font-family: "Poppins", sans-serif;
   scroll-behavior: smooth;
 }
+
 a {
   color: inherit;
   text-decoration: none;
 }
+
 .paddings {
   padding: 1.5rem;
 }
@@ -35,6 +43,7 @@ a {
   align-items: center;
   flex-wrap: wrap;
 }
+
 .flexStart {
   display: flex;
   justify-content: flex-start;
@@ -53,12 +62,14 @@ a {
   align-items: center;
   flex-direction: column;
 }
+
 .flexColStart {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
 }
+
 .flexColEnd {
   display: flex;
   flex-direction: column;
@@ -73,9 +84,10 @@ a {
 }
 
 .secondaryText {
-  color: rgb(140 139 139);
+  color: rgb(141, 49, 49);
   font-size: 0.9rem;
 }
+
 .orangeText {
   color: orange;
   font-size: 1.5rem;
@@ -96,7 +108,8 @@ a {
   }
 }
 
-@media (min-width: 1280px), (min-width: 768px) {
+@media (min-width: 1280px),
+(min-width: 768px) {
   .paddings {
     padding: 2rem;
   }
@@ -106,6 +119,7 @@ a {
   .primaryText {
     font-size: 1.5rem;
   }
+
   .orangeText {
     font-size: 1.2rem;
   }
@@ -120,7 +134,12 @@ a {
   border-radius: 4px;
   transition: all 300ms ease-in;
 }
+
 .button:hover {
   cursor: pointer;
   transform: scale(1.1);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }

@@ -2,21 +2,28 @@ import "./Hero.css";
 import { HiLocationMarker } from "react-icons/hi";
 import CountUp from "react-countup";
 import { motion } from "framer-motion";
+import { Swiper, SwiperSlide } from "swiper/react";
+import 'swiper/css';
+import 'swiper/css/effect-cards';
+import { EffectCards } from 'swiper/modules';
+import hero_sliders from "../../utils/Slide_hero";
+
 const Hero = () => {
   return (
     <section className="hero-wrapper">
+
       <div className="paddings innerWidth flexCenter hero-container">
         {/* left side */}
         <div className="flexColStart hero-left">
           <div className="hero-title">
             <div className="orange-circle" />
             <motion.h1
-            initial={{ y: "2rem", opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{
-              duration: 2,
-              type: "ease-in",
-            }}
+              initial={{ y: "2rem", opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{
+                duration: 2,
+                type: "ease-in",
+              }}
             >
               Discover <br />
               Most Suitable
@@ -59,7 +66,7 @@ const Hero = () => {
         </div>
 
         {/* right side */}
-        <div className="flexCenter hero-right">
+        {/* <div className="flexCenter hero-right">
           <motion.div
             initial={{ x: "7rem", opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -71,7 +78,30 @@ const Hero = () => {
           >
             <img src="./hero-image.png" alt="houses" />
           </motion.div>
-        </div>
+        </div> */}
+        < motion.div
+          initial={{ x: "7rem", opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{
+            duration: 2,
+            type: "ease-in",
+          }}
+          className="flexCenter">
+          <Swiper
+            effect="cards"
+            grabCursor={true}
+            centeredSlides="true"
+            loop="true"
+            modules={[EffectCards]}
+            className="swiper-hero"
+          >
+            {hero_sliders.map((hero_slider, index) => (
+              <SwiperSlide key={index}>
+                <img src={hero_slider.imagePath} alt="houses" />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </motion.div>
       </div>
     </section>
   );

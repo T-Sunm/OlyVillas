@@ -1,0 +1,15 @@
+.prev , .next{
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.Swiper-card:hover .prev ,
+.Swiper-card:hover .next
+{
+opacity: 1;
+}
+
+.next.swiper-button-disabled,
+.prev.swiper-button-disabled {
+    opacity: 0;
+}

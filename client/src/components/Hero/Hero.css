@@ -3,6 +3,7 @@
   position: relative;
   z-index: 1;
   padding-bottom: 2rem;
+
 }
 
 
@@ -59,6 +60,22 @@
     color: orange;
 }
 /* right side */
+
+.swiper-hero{
+  width: 520px;
+  height: 620px;
+}
+.swiper-hero .swiper-slide{
+  width: 30rem;
+  height: 35rem;
+  overflow: hidden;
+  border-radius: 15rem 15rem 0 0;
+  border: 8px solid rgba(255, 255, 255, 0.12);
+}
+.swiper-hero .swiper-slide>img{
+  width: 100%;
+    height: 100%;
+}
 
 .image-container {
   width: 30rem;
