@@ -8,9 +8,19 @@ import PlaceDetails from '../../components/Process/PlaceDetails'
 import FloorPlan from '../../components/Process/FloorPlan'
 import ProcessAmeneties from '../../components/Process/ProcessAmeneties'
 import Photos from '../../components/Process/Photos'
+import { useDispatch, useSelector } from 'react-redux'
+import { setStepDecrease, setStepIncrease } from '../../store/slices/StepSlice'
+import Title from '../../components/Process/Title'
+import Description from '../../components/Process/Description'
+import StepThreeStarter from '../../components/Process/StepThreeStarter'
+import Price from '../../components/Process/Price'
+import ListingCreated from '../../components/Process/ListingCreated'
 
 const NewListing = () => {
-    const [step, setStep] = useState(0)
+
+    const step = useSelector((state) => state.StepSlice.step)
+    console.log(step)
+    const dispatch = useDispatch()
     const getComponent = () => {
         switch (step) {
             case 0:
@@ -31,13 +41,25 @@ const NewListing = () => {
                 return <ProcessAmeneties />
             case 8:
                 return <Photos />
+            case 9:
+                return <Title />
+            case 10:
+                return <Description />
+            case 11:
+                return <StepThreeStarter />
+            case 12:
+                return <Price />
+            case 13:
+                return <ListingCreated />
+            default:
+                return <></>
         }
     }
     const handlePrevious = () => {
-        setStep(step - 1)
+        dispatch(setStepDecrease())
     }
     const handleNext = () => {
-        setStep(step + 1)
+        dispatch(setStepIncrease())
     }
     return (
         <div className='grid h-[100vh]'>
@@ -61,18 +83,22 @@ const NewListing = () => {
                         Back
                     </button>
                 )}
-                {step !== 0 ? (
-                    <button
-                        onClick={handleNext}
-                        className='bg-[#222222] py-3 px-5 text-white font-medium rounded-md cursor-pointer'>
-                        Next
-                    </button>
-                ) : (
-                    <button
-                        onClick={handleNext}
-                        className='bg-airbnb-theme-color py-3 px-5 text-white font-medium rounded-md cursor-pointer'>
-                        Get Started
-                    </button>
+                {step !== 8 && (
+                    <>
+                        {step !== 0 ? (
+                            <button
+                                onClick={handleNext}
+                                className='bg-[#222222] py-3 px-5 text-white font-medium rounded-md cursor-pointer'>
+                                Next
+                            </button>
+                        ) : (
+                            <button
+                                onClick={handleNext}
+                                className='bg-airbnb-theme-color py-3 px-5 text-white font-medium rounded-md cursor-pointer'>
+                                Get Started
+                            </button>
+                        )}
+                    </>
                 )}
 
             </div>

@@ -7,7 +7,10 @@ const initialState ={
     mapData:undefined,
     placeSpace:{bathrooms:1, beds:1, guetsts:4},
     placeAmeneties:[],
-    photos:[]
+    photos:[],
+    title:"",
+    description:"",
+    price:0
 }
 
 export const createProcessSlice = createSlice({
@@ -33,6 +36,18 @@ export const createProcessSlice = createSlice({
             state.placeAmeneties = action.payload
         },
         setPhotos:(state,action)=>{
+            state.photos = state.photos.concat( action.payload)
+        },
+        removePhotos:(state,action)=>{
+            state.photos= state.photos.filter(file => file.name !== action.payload)
+        },
+        setTitle:(state,action)=>{
+            state.title = action.payload
+        },
+        setDescription:(state,action)=>{
+            state.photos = action.payload
+        },
+        setPrice:(state,action)=>{
             state.photos = action.payload
         },
     }
@@ -44,6 +59,7 @@ export const { setLocationType,
             setMapData,
             setPlaceSpace,
             setPlaceAmeneties,
-            setPhotos
+            setPhotos,
+            removePhotos
             } = createProcessSlice.actions;
 export default createProcessSlice.reducer
