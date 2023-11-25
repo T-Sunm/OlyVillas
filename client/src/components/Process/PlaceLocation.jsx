@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setLocation } from '../../store/slices/ProcessSlice';
 const PlaceLocation = () => {
     const mapboxToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
-    const { lng, lat } = useSelector((state) => state.CreateProcess.location)
+    const { lng, lat } = useSelector((state) => state.CreateProcess.locationData)
     const dispatch = useDispatch()
     const mapRef = useRef()
 

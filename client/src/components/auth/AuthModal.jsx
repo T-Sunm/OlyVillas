@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoMdClose } from 'react-icons/io'
 import { useSelector, useDispatch } from 'react-redux'
 import FormInput from '../FormInput/FormInput'
-import { setAuthModalFalse } from '../../store/slices/AuthSlice'
+import { setAuthModalFalse, setAuthModalTrue, setToggleModal, setUserInfo } from '../../store/slices/AuthSlice'
+import { checkUser, createUser, login } from '../../utils/api'
 
-const AuthModal = () => {
-    const isAuth = useSelector((state) => state.auth.value)
+const AuthModal = ({ toggle, setToggle }) => {
+    const { isAuth, toggleAuthenticated, userInfo } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -14,15 +15,35 @@ const AuthModal = () => {
     const [userFound, setUserFound] = useState(null)
 
     const verifyEmail = async () => {
+        const result = await checkUser(email);
+        console.log(result)
+        if (result.data.user === true) {
+            setUserFound(true)
+        } else {
+            setUserFound(false)
+        }
 
     }
 
     const handleLogin = async () => {
-
+        const result = await login(email, password)
+        console.log(result)
+        if (result) {
+            localStorage.setItem("UserInfo", JSON.stringify(result))
+            dispatch(setAuthModalTrue())
+            dispatch(setToggleModal(false))
+            dispatch(setUserInfo(result))
+        }
     }
 
     const handleSignup = async () => {
-
+        const result = await createUser(email, password, firstName, lastName)
+        console.log(result)
+        if (result) {
+            dispatch(setToggleModal(false))
+            dispatch(setAuthModalTrue())
+            dispatch(setUserInfo(result.user))
+        }
     }
 
     return (
@@ -40,7 +61,7 @@ const AuthModal = () => {
                         <div className='bg-white pb-4 pt-5'>
                             <div className='relative border-b border-b-gray-300 flex justify-center items-center pb-5'>
                                 <span
-                                    onClick={() => dispatch(setAuthModalFalse())}
+                                    onClick={() => dispatch(setToggleModal(false))}
                                     className='absolute left-5 cursor-pointer text-lg'>
                                     <IoMdClose />
                                 </span>
@@ -52,11 +73,16 @@ const AuthModal = () => {
                                 <h3 className='text-xl pb-5'>Welcom to AirBnb</h3>
                                 {
                                     userFound === null
-                                    && <FormInput name="email" placeholder="Email" value={email} setValue={setEmail} />
+                                    && <div>
+                                        <FormInput name="email" placeholder="Email" value={email} setValue={setEmail} />
+
+                                    </div>
                                 }
                                 {
                                     userFound === true
-                                    && <FormInput name="password" placeholder="password" value={password} setValue={setPassword} />
+                                    && <div>
+                                        <FormInput name="password" placeholder="password" value={password} setValue={setPassword} />
+                                    </div>
                                 }
                                 {userFound === false
                                     && <div className='flex flex-col gap-3'>
@@ -66,11 +92,12 @@ const AuthModal = () => {
                                     </div>
                                 }
                                 <button
-                                    onClick={userFound === null ?
-                                        verifyEmail :
-                                        userFound ?
-                                            handleLogin :
-                                            handleSignup
+                                    onClick={
+                                        userFound === null ?
+                                            verifyEmail :
+                                            userFound ?
+                                                handleLogin :
+                                                handleSignup
                                     }
                                     className='bg-airbnb-theme-color w-full py-3 mt-5 text-white text-lg font-medium rounded-md' >
                                     Continue

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setMapData } from '../../store/slices/ProcessSlice'
 import FormInput from '../FormInput/FormInput'
@@ -10,6 +10,8 @@ const PlaceDetails = () => {
     const handleChange = (name, value) => {
         dispatch(setMapData({ ...mapData, [name]: value }))
     }
+
+    const [item, setItem] = useState('')
     return (
         <div className='flex flex-col justify-center items-center gap-2 w-full h-[70vh]'>
             <div className='flex flex-col gap-3'>
@@ -19,7 +21,7 @@ const PlaceDetails = () => {
                 </p>
             </div>
             <div className='flex flex-col gap-3 w-full h-full overflow-auto no-scrollbar pb-20 pt-5  items-center'>
-                <div className='flex flex-col gap-2 w-[30%]'>
+                <div className={`w-[30%]  ${item === "country" ? '' : 'border border-t-[#b0b0b0] border-x-[#b0b0b0] rounded-lg'}`}>
                     <FormInput
                         isListing
                         name="country"
@@ -27,51 +29,50 @@ const PlaceDetails = () => {
                         setValue={handleChange}
                         type='text'
                         value={mapData?.country}
-                    />
-                    <FormInput
-                        isListing
-                        name="neighborhood"
-                        placeholder={"House, flat, bldg, etc."}
-                        setValue={handleChange}
-                        type='text'
-                        value={mapData?.neighborhood}
+                        item={item}
+                        setItem={setItem}
                     />
                 </div>
-                <div className='flex flex-col gap-2 w-[30%]'>
+                <div className={`flex flex-col w-[30%]  border border-t-[#b0b0b0] border-x-[#b0b0b0]  rounded-lg overflow-hidden`}>
                     <FormInput
                         isListing
-                        name="place"
-                        placeholder={"Area/village (if applicable)"}
+                        name="Street address"
                         setValue={handleChange}
                         type='text'
                         value={mapData?.place}
+                        item={item}
+                        setItem={setItem}
                     />
                     <FormInput
                         isListing
-                        name="locality"
-                        placeholder={"Street Address"}
-                        setValue={handleChange}
-                        type='text'
-                        value={mapData?.locality}
-                    />
-                </div>
-                <div className='flex flex-col gap-2 w-[30%]'>
-                    <FormInput
-                        isListing
-                        name="landmark"
-                        placeholder={"Nearby landmark (if applicable)"}
-                        setValue={handleChange}
-                        type='text'
-                        value={mapData?.place}
-                    />
-                    <FormInput
-                        isListing
-                        name="district"
+                        name="Apt,floor,bldg (if applicable)"
                         placeholder={"City / town"}
                         setValue={handleChange}
                         type='text'
                         value={mapData?.district}
+                        item={item}
+                        setItem={setItem}
                     />
+                    <FormInput
+                        isListing
+                        name="City/town/village (if applicable)"
+                        setValue={handleChange}
+                        type='text'
+                        value={mapData?.locality}
+                        item={item}
+                        setItem={setItem}
+                    />
+                    <FormInput
+                        isListing
+                        name="Province / state / territory (if applicable)"
+                        placeholder={"Nearby landmark (if applicable)"}
+                        setValue={handleChange}
+                        type='text'
+                        value={mapData?.place}
+                        item={item}
+                        setItem={setItem}
+                    />
+
                 </div>
             </div>
         </div>

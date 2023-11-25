@@ -1,22 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState ={
+    userEmail:localStorage.getItem('UserInfo')?
+    JSON.parse(localStorage.getItem('UserInfo')).user.email:
+    null,
     locationType:undefined,
     placeType:undefined,
-    location:{lng:0, lat:0},
+    locationData:{lng:0, lat:0},
     mapData:undefined,
     placeSpace:{bathrooms:1, beds:1, guetsts:4},
     placeAmeneties:[],
     photos:[],
     title:"",
     description:"",
-    price:0
+    price:10
 }
 
 export const createProcessSlice = createSlice({
     name:'CreateProcess',
     initialState,
     reducers:{
+        setUserEmail:(state,action)=>{
+            state.userEmail = action.payload
+        },
         setLocationType:(state,action)=>{
             state.locationType = action.payload
         },
@@ -24,7 +30,7 @@ export const createProcessSlice = createSlice({
             state.placeType = action.payload
         },
         setLocation:(state,action)=>{
-            state.location = action.payload
+            state.locationData = action.payload
         },
         setMapData:(state,action)=>{
             state.mapData = action.payload
@@ -36,30 +42,35 @@ export const createProcessSlice = createSlice({
             state.placeAmeneties = action.payload
         },
         setPhotos:(state,action)=>{
-            state.photos = state.photos.concat( action.payload)
+            state.photos = state.photos.concat(action.payload)
         },
         removePhotos:(state,action)=>{
-            state.photos= state.photos.filter(file => file.name !== action.payload)
+            state.photos= state.photos.filter(file => file !== action.payload)
         },
         setTitle:(state,action)=>{
             state.title = action.payload
         },
         setDescription:(state,action)=>{
-            state.photos = action.payload
+            state.description = action.payload
         },
         setPrice:(state,action)=>{
-            state.photos = action.payload
+            state.price = action.payload
         },
     }
 })
 
-export const { setLocationType,
+export const { 
+            setUserEmail,
+            setLocationType,
             setPlaceType ,
             setLocation,
             setMapData,
             setPlaceSpace,
             setPlaceAmeneties,
             setPhotos,
-            removePhotos
+            removePhotos,
+            setTitle,
+            setDescription,
+            setPrice
             } = createProcessSlice.actions;
 export default createProcessSlice.reducer

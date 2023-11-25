@@ -1,0 +1,8 @@
+.itemFilter {
+    transition: transform 0.3s ease;
+}
+
+.itemFilter:active {
+    transform: scale(0.95);
+    border: 1px solid black;
+}

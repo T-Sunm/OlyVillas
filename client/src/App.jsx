@@ -13,25 +13,67 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import { QueryClient, QueryClientProvider } from "react-query";
 import 'react-toastify/dist/ReactToastify.css';
 import NewListing from "./pages/new-listing/NewListing";
+import LayoutMain from "./components/Layout/LayoutMain";
+import Property from "./pages/Property/Property";
+import Reservations from "./pages/Reservations/Reservations";
+import Hosting from "./pages/Hosting/Hosting";
+import Whistlist from "./pages/Whistlist/Whistlist";
+import Layout2 from "./components/Layout/Layout2";
+import Listing from "./pages/Hosting/Listing/Listing";
 const router = createBrowserRouter([
   {
-    element: <Layout />,
+    path: "/",
     children: [
       {
-        path: "/",
+        index: true,
         element: <Website />
       },
-
+      {
+        element: <LayoutMain />,
+        path: "/all-properties",
+        children: [
+          {
+            index: true,
+            element: <Properties />
+          },
+          {
+            path: "/all-properties/:propertyId",
+            element: <Property />, // Hiển thị thông tin chi tiết của một property cụ thể
+          },
+        ]
+      },
+      {
+        element: <Layout2 />,
+        children: [
+          {
+            path: "/reservations",
+            element: <Reservations />
+          },
+          {
+            path: "/whishlists",
+            element: <Whistlist />
+          },
+        ]
+      },
+      {
+        path: "/hosting",
+        children: [
+          {
+            index: true,
+            element: <Hosting />,
+          },
+          {
+            path: "/hosting/listings",
+            element: <Listing />
+          }
+        ]
+      },
+      {
+        path: "/createResidency",
+        element: <NewListing />
+      },
     ]
   },
-  {
-    path: "/properties",
-    element: <Properties />
-  },
-  {
-    path: "/createResidency",
-    element: <NewListing />
-  }
 ])
 
 function App() {

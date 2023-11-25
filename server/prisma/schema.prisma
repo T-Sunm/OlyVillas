@@ -1,41 +1,63 @@
 datasource db {
-    provider = "mongodb"
-    url      = env("DATABASE_URL")
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 model User {
-    // @id: Đánh dấu đây là khóa chính 
-    // @default(auto()): Giá trị mặc định của trường id là tự động generate
-    id               String      @id @default(auto()) @map("_id") @db.ObjectId
-    // ? nghĩa là có thể null
-    name             String?
-    email            String      @unique
-    image            String
-    bookedVisits     Json[]
-    favResidenciesID String[]    @db.ObjectId
-    // dùng @relation("Owner") @relation("Owner") 
-    ownedResidencies Residency[] @relation("Owner")
+  // @id: Đánh dấu đây là khóa chính 
+  // @default(auto()): Giá trị mặc định của trường id là tự động generate
+  id               String        @id @default(auto()) @map("_id") @db.ObjectId
+  // ? nghĩa là có thể null
+  firstName        String?
+  lastName         String?
+  email            String        @unique
+  password         String
+  image            String?
+  bookedVisits     Json[]
+  favResidenciesID String[]      @db.ObjectId
+  // dùng @relation("Owner") @relation("Owner") 
+  ownedResidencies Residency[]   @relation("Owner")
+  Reservations     Reservation[]
 }
 
 model Residency {
-    id          String   @id @default(auto()) @map("_id") @db.ObjectId
-    title       String
-    description String
-    price       Int
-    address     String
-    city        String
-    country     String
-    image       String
-    facilities  Json
-    userEmail   String
-    // owner là khóa ngoại 
-    owner       User     @relation("Owner", fields: [userEmail], references: [email])
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  title          String
+  price          Int
+  userEmail      String
+  locationType   String
+  placeType      String
+  mapData        Json
+  locationData   Json
+  placeSpace     Json
+  placeAmeneties Json
+  photos         Json
+  description    String
+  star           Float?
+  // owner là khóa ngoại 
+  owner          User          @relation("Owner", fields: [userEmail], references: [email])
+  Reservations   Reservation[]
 
-    @@unique([address, userEmail])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Reservation {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  ResidencyId String   @unique @db.ObjectId
+  tripInfo    Json
+  price       Float
+  Status      String
+  startDate   DateTime
+  endDate     DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  userTrip  User      @relation(fields: [userId], references: [id])
+  Residency Residency @relation(fields: [ResidencyId], references: [id])
 }

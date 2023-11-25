@@ -1,24 +1,73 @@
 import React, { useEffect, useState } from 'react'
 import './MenuProfile.css'
 import OutsideClickHandler from 'react-outside-click-handler';
-import { useDispatch } from 'react-redux';
-import { setAuthModalTrue } from '../../store/slices/AuthSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAuthModalFalse, setAuthModalTrue, setToggleModal, setUserInfo } from '../../store/slices/AuthSlice';
+import { Link, redirect, useNavigate } from 'react-router-dom';
 
 const MenuProfile = ({ isOpen, setToggle }) => {
   const dispatch = useDispatch()
-  const menuProItems = [
+  const navigate = useNavigate()
+  const isAuthenticated = useSelector((state) => state.auth.authenticated)
+  console.log(isAuthenticated)
+  const menuProItemsAuthenticated = [
+    {
+      title: "Whishlists",
+      font: "font-semibold",
+      Link: "/whishlists",
+      callBack: () => {
+        setToggle(false)
+      }
+    },
+    {
+      title: "Trips",
+      font: "font-semibold",
+      Link: "/reservations",
+      callBack: () => {
+        setToggle(false)
+
+      }
+    },
+    {
+      title: "Manage Listings",
+      callBack: () => {
+        setToggle(false)
+        dispatch(setAuthModalFalse())
+      }
+    },
+    {
+      title: "",
+    },
+    {
+      title: "Log out ",
+      callBack: () => {
+        setToggle(false)
+        localStorage.clear()
+        dispatch(setAuthModalFalse())
+        dispatch(setUserInfo(null))
+      }
+    },
+    {
+      title: "Help Center",
+      callBack: () => {
+        setToggle(false)
+      }
+    }
+  ];
+  const menuProItemsNotAuthenticated = [
     {
       title: "Sign up",
       font: "font-semibold",
       callBack: () => {
         setToggle(false)
-        dispatch(setAuthModalTrue())
+        dispatch(setToggleModal(true))
       }
     },
     {
       title: "Log in",
       callBack: () => {
         setToggle(false)
+        dispatch(setToggleModal(true))
       }
     },
     {
@@ -53,22 +102,45 @@ const MenuProfile = ({ isOpen, setToggle }) => {
       {isOpen === true ? (
         <div className={`MenuProfile absolute right-4  w-auto h-auto rounded-[12px] py-[8px] mt-[34px] z-[11] bg-white `}>
           <OutsideClickHandler onOutsideClick={() => setToggle(false)}>
-            <ul>
-              {menuProItems.map((menuProItem, index) => (
-                index !== 2 ? (
-                  <li
-                    // hàm handleClick này giúp mỗi khi nhấn vào là ẩn menuProfile đi
-                    onClick={(e) => handleClick(e, menuProItem.callBack)}
-                    key={index} className={`py-[12px] px-[16px] w-[240px] ${menuProItem.font}`}>
-                    <div>
-                      {menuProItem.title}
-                    </div>
-                  </li>
-                ) : (
-                  <div key={index} className='h-[1px] bg-[#c6c5c5]'></div>
-                )
-              ))}
-            </ul>
+            {isAuthenticated ? (
+              <ul>
+                {menuProItemsAuthenticated.map((menuProItem, index) => (
+                  index !== 2 ? (
+                    <li className={`py-[12px] px-[16px] w-[240px] ${menuProItem.font}`}>
+                      <Link
+                        to={menuProItem?.Link}
+                        // hàm handleClick này giúp mỗi khi nhấn vào là ẩn menuProfile đi
+                        onClick={(e) => handleClick(e, menuProItem.callBack)}
+                        key={index} >
+                        <div className=''>
+                          {menuProItem.title}
+                        </div>
+                      </Link>
+                    </li>
+
+                  ) : (
+                    <div key={index} className='h-[1px] bg-[#c6c5c5]'></div>
+                  )
+                ))}
+              </ul>
+            ) : (
+              <ul>
+                {menuProItemsNotAuthenticated.map((menuProItem, index) => (
+                  index !== 2 ? (
+                    <li
+                      // hàm handleClick này giúp mỗi khi nhấn vào là ẩn menuProfile đi
+                      onClick={(e) => handleClick(e, menuProItem.callBack)}
+                      key={index} className={`py-[12px] px-[16px] w-[240px] ${menuProItem.font}`}>
+                      <div className={menuProItem?.font}>
+                        {menuProItem.title}
+                      </div>
+                    </li>
+                  ) : (
+                    <div key={index} className='h-[1px] bg-[#c6c5c5]'></div>
+                  )
+                ))}
+              </ul>
+            )}
           </OutsideClickHandler>
         </div>
 

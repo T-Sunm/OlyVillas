@@ -1,13 +1,17 @@
 import React from 'react'
-
-const FormInput = ({ name, type = "text", value, setValue, placeholder, isListing = false }) => {
+import './FormInput.css'
+const FormInput = ({ name, type = "text", value, setValue, isListing = false, item, setItem }) => {
   return (
-    <input type={type} value={value} placeholder={placeholder}
-      onChange={(e) => isListing ?
-        setValue(name, e.target.value) :
-        setValue(e.target.value)}
-      className='border border-gray px-2 py-4 rounded-md w-full'
-    />
+    <div className={` input-box ${item === name ? "on" : "off"} `} onClick={() => setItem(name)}>
+      <input
+        id={name}
+        type={type} value={value}
+        onChange={(e) => isListing ?
+          setValue(name, e.target.value) :
+          setValue(e.target.value)}
+      />
+      <label htmlFor={name} >{name}</label>
+    </div>
   )
 }
 

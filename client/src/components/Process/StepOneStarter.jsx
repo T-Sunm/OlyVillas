@@ -3,7 +3,7 @@ import React from 'react'
 const StepOneStarter = () => {
     return (
         <div className='px-32 h-[70vh]'>
-            <div className='grid grid-cols-2 items-center tablet:grid-cols-1'>
+            <div className='grid desktop:grid-cols-2 items-center tablet:grid-cols-1'>
                 <div className='flex flex-col gap-4 text-airbnb-light-black'>
                     <span className='text-2xl'>Step 1</span>
                     <strong className='text-4xl'>Tel us about your place</strong>

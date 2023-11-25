@@ -1,0 +1,31 @@
+.ListingPhotos {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 250px 250px;
+    grid-gap: 10px;
+
+    grid-template-areas:
+        "h1 h1 h2 h3"
+        "h1 h1 h4 h5"
+    ;
+}
+
+.ListingPhotos li:first-child {
+    grid-area: h1;
+}
+
+.ListingPhotos li:nth-child(2) {
+    grid-area: h2;
+}
+
+.ListingPhotos li:nth-child(3) {
+    grid-area: h3;
+}
+
+.ListingPhotos li:nth-child(4) {
+    grid-area: h4;
+}
+
+.ListingPhotos li:nth-child(5) {
+    grid-area: h5;
+}

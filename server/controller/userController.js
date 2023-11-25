@@ -1,22 +1,69 @@
 import asyncHandler from "express-async-handler";
 import { prisma } from "../config/prismaConfig.js";
-
+import  jwt  from "jsonwebtoken";
+import bcrypt from 'bcrypt'
 export const createUser = asyncHandler(async (req, res) => {
   console.log("creating a user");
-  let { email } = req.body;
+  let { email,password } = req.body;
   const existUser = await prisma.user.findUnique({ where: { email: email } });
   if (!existUser) {
-    const user = await prisma.user.create({ data: req.body });
+    const hashPass = await bcrypt.hash(password,10)
+    const data = {...req.body , password:hashPass}
+    const user = await prisma.user.create({ data: data});
+    // Remove password from the response
+    const { password: _, ...userWithoutPassword } = user;
     res.send({
       message: "User registered successfully",
-      user: user,
+      user: userWithoutPassword,
     });
   } else {
-    res.status(201).send({
-      message: "User already registered",
+    res.status(500).send({
+      message: "Error",
     });
   }
 });
+
+export const verifyEmail = asyncHandler(async (req,res)=>{
+  let {email} = req.body
+  const existUser = await prisma.user.findUnique({ where: { email: email } });
+  if (existUser) {
+    res.send({
+      message: "User already registered",
+      user: true,
+    });
+  } else {
+    res.status(201).send({
+      message: "User not registed",
+      user:false
+    });
+  }
+})
+
+export const login = asyncHandler(async (req,res)=>{
+  const { email, password } = req.body;
+
+  const user = await prisma.user.findUnique({
+    where: { email }
+  });
+
+  if (!user) {
+    return res.status(404).json({ message: "Tên đăng nhập hoặc mật khẩu không đúng." });
+  }
+
+  const isPasswordValid = await bcrypt.compare( password,user.password )
+  if (!isPasswordValid) {
+    return res.status(400).json({ message: "mật khẩu không đúng." });
+  }
+  const token = jwt.sign(
+    { userId: user.id },
+    process.env.ACCESS_TOKEN_SECRET,
+    { expiresIn: '1h' }
+  );
+  // Remove password from the response
+const { password: _, ...userWithoutPassword } = user;
+  res.status(200).json({ token, user: userWithoutPassword});
+})
+
 export const bookVisit = asyncHandler(async (req, res) => {
   const { email, date } = req.body;
   const { id: idVilla } = req.params;
@@ -63,33 +110,12 @@ export const getAllVisit = asyncHandler(async (req, res) => {
   }
 });
 
-export const cancelBooking = asyncHandler(async (req, res) => {
-  const { email } = req.body;
-  const { id: idVilla } = req.params;
-  const user = await prisma.user.findUnique({
-    where: { email },
-  });
-  const bookVisitIndex = user.bookedVisits.findIndex(
-    (bookVisit) => bookVisit.idVilla === idVilla
-  );
-  if (bookVisitIndex === -1) {
-    res.status(404).json({ message: "Booking not found" });
-  } else {
-    user.bookedVisits.splice(bookVisitIndex, 1);
-    await prisma.user.update({
-      where: { email: email },
-      data: {
-        bookedVisits: user.bookedVisits,
-      },
-    });
-    res.send("Booking cancelled successfully");
-  }
-});
 
 export const toFav = asyncHandler(async (req, res) => {
   const { email } = req.body;
   const { id: VillasId } = req.params;
 
+  console.log(email, VillasId)
   try {
     const user = await prisma.user.findUnique({
       where: { email },

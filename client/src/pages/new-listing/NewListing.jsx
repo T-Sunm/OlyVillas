@@ -15,12 +15,36 @@ import Description from '../../components/Process/Description'
 import StepThreeStarter from '../../components/Process/StepThreeStarter'
 import Price from '../../components/Process/Price'
 import ListingCreated from '../../components/Process/ListingCreated'
-
+import { useMutation } from 'react-query'
+import { createResidency } from '../../utils/api'
+import { toast } from 'react-toastify'
+import { setDescription, setLocation, setLocationType, setMapData, setPhotos, setPlaceAmeneties, setPlaceSpace, setPlaceType, setPrice, setTitle, setUserEmail } from '../../store/slices/ProcessSlice'
 const NewListing = () => {
+    const { token: UserToken, user } = useSelector((state) => state.auth.userInfo)
+    const residency = useSelector((state) => state.CreateProcess)
 
     const step = useSelector((state) => state.StepSlice.step)
-    console.log(step)
     const dispatch = useDispatch()
+    const { mutate, isLoading } = useMutation({
+        mutationFn: () => createResidency(residency, UserToken),
+        onError: ({ response }) => toast.error(response.data.message, { position: "bottom-right" }),
+        onSuccess: () => {
+            toast.success("Added Successfully", { position: "bottom-right" })
+            dispatch(setLocationType(undefined))
+            dispatch(setPlaceType(undefined))
+            dispatch(setLocation({ lng: 0, lat: 0 }))
+            dispatch(setMapData(undefined))
+            dispatch(setPlaceSpace({ bathrooms: 1, beds: 1, guetsts: 4 }))
+            dispatch(setPlaceAmeneties([]))
+            dispatch(setPhotos([]))
+            dispatch(setTitle(""))
+            dispatch(setDescription(""))
+            dispatch(setPrice(10))
+            dispatch(setStepIncrease())
+        }
+    })
+
+
     const getComponent = () => {
         switch (step) {
             case 0:
@@ -61,6 +85,10 @@ const NewListing = () => {
     const handleNext = () => {
         dispatch(setStepIncrease())
     }
+    const handleSubmit = () => {
+        mutate()
+        dispatch(setStepIncrease())
+    }
     return (
         <div className='grid h-[100vh]'>
             <div className='flex justify-between px-20 items-center'>
@@ -83,7 +111,7 @@ const NewListing = () => {
                         Back
                     </button>
                 )}
-                {step !== 8 && (
+                {step < 12 ? (
                     <>
                         {step !== 0 ? (
                             <button
@@ -99,8 +127,13 @@ const NewListing = () => {
                             </button>
                         )}
                     </>
+                ) : (
+                    <button
+                        className='bg-airbnb-theme-color py-3 px-5 text-white font-medium rounded-md cursor-pointer'
+                        onClick={handleSubmit}>
+                        Submit
+                    </button>
                 )}
-
             </div>
         </div>
     )
