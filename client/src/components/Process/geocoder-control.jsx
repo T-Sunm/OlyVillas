@@ -22,13 +22,15 @@ export default function GeocoderControl() {
     console.log(longlat)
     const data = {
       landmark: coords?.text,
-      neighborhood: "",
-      postcode: "",
-      locality: "",
-      place: "",
-      district: "",
-      region: "",
-      country: ""
+      neighborhood: coords.neighborhood,
+      postcode: coords.postcode,
+      locality: coords.locality,
+      place: coords.place,
+      district: coords.district,
+      region: coords.region,
+      country: coords.country,
+      street_address: "",
+      address_extra: ""
     }
     coords?.context.map((item) => {
       Object.keys(data)?.forEach((key) => {

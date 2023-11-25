@@ -20,6 +20,8 @@ import Hosting from "./pages/Hosting/Hosting";
 import Whistlist from "./pages/Whistlist/Whistlist";
 import Layout2 from "./components/Layout/Layout2";
 import Listing from "./pages/Hosting/Listing/Listing";
+import EditResidency from "./pages/Hosting/Editresidency/EditResidency";
+import LayoutEdit from "./components/Layout/LayoutEdit";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -52,6 +54,20 @@ const router = createBrowserRouter([
           {
             path: "/whishlists",
             element: <Whistlist />
+          },
+          {
+            path: "/editresidency",
+            element: <EditResidency />
+          },
+        ]
+      },
+      {
+        element: <LayoutEdit />,
+        path: "/editresidency",
+        children: [
+          {
+            index: true,
+            element: <EditResidency />
           },
         ]
       },

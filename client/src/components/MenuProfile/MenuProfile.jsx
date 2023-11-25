@@ -100,7 +100,7 @@ const MenuProfile = ({ isOpen, setToggle }) => {
   return (
     <div>
       {isOpen === true ? (
-        <div className={`MenuProfile absolute right-4  w-auto h-auto rounded-[12px] py-[8px] mt-[34px] z-[11] bg-white `}>
+        <div className={`MenuProfile absolute right-4  w-auto h-auto rounded-[12px] py-[8px] mt-[34px] z-[11] bg-white text-black `}>
           <OutsideClickHandler onOutsideClick={() => setToggle(false)}>
             {isAuthenticated ? (
               <ul>

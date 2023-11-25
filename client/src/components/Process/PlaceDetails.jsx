@@ -25,7 +25,7 @@ const PlaceDetails = () => {
                     <FormInput
                         isListing
                         name="country"
-                        placeholder={"Country"}
+                        title={"Country"}
                         setValue={handleChange}
                         type='text'
                         value={mapData?.country}
@@ -36,26 +36,26 @@ const PlaceDetails = () => {
                 <div className={`flex flex-col w-[30%]  border border-t-[#b0b0b0] border-x-[#b0b0b0]  rounded-lg overflow-hidden`}>
                     <FormInput
                         isListing
-                        name="Street address"
+                        title="Street address"
+                        name="street_address"
                         setValue={handleChange}
                         type='text'
-                        value={mapData?.place}
                         item={item}
                         setItem={setItem}
                     />
                     <FormInput
                         isListing
-                        name="Apt,floor,bldg (if applicable)"
-                        placeholder={"City / town"}
+                        title="Apt,floor,bldg (if applicable)"
+                        name="address_extra"
                         setValue={handleChange}
                         type='text'
-                        value={mapData?.district}
                         item={item}
                         setItem={setItem}
                     />
                     <FormInput
                         isListing
-                        name="City/town/village (if applicable)"
+                        title="City/town/village (if applicable)"
+                        name="locality"
                         setValue={handleChange}
                         type='text'
                         value={mapData?.locality}
@@ -64,11 +64,21 @@ const PlaceDetails = () => {
                     />
                     <FormInput
                         isListing
-                        name="Province / state / territory (if applicable)"
-                        placeholder={"Nearby landmark (if applicable)"}
+                        title="Province / state / territory (if applicable)"
+                        name="place"
                         setValue={handleChange}
                         type='text'
                         value={mapData?.place}
+                        item={item}
+                        setItem={setItem}
+                    />
+                    <FormInput
+                        isListing
+                        title="Postal code (if applicable)"
+                        name="postcode"
+                        setValue={handleChange}
+                        type='text'
+                        value={mapData?.postcode}
                         item={item}
                         setItem={setItem}
                     />

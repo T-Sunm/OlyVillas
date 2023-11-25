@@ -30,7 +30,8 @@
 }
 
 /*  sibling celctor , khi input đc forcus thì label sẽ nổi lên trên */
-.input-box input:focus~label {
+.input-box input:focus~label,
+.input-box input.filled~label {
     font-size: 0.7em;
     transform: translateX(-1%);
     top: 5px;

@@ -7,7 +7,7 @@ const Navigation = () => {
 
     return (
         <>
-            <div className='flex justify-between place-items-center px-[40px] h-[80px] relative'>
+            <div className='flex justify-between place-items-center px-[40px] h-[80px] relative bg-white'>
 
                 <Link to={"/all-properties"}>
                     <img src='./logo2.png' />
@@ -19,12 +19,13 @@ const Navigation = () => {
                 rounded-[30px]
             '>
                         <span className='
+                        text-black
                     font-semibold 
                     '>
                             Homyz your home
                         </span>
                     </div>
-                    <div className='flex place-items-center rounded-full hover:bg-[#f1eeee] p-[15px]'>
+                    <div className='flex place-items-center rounded-full hover:bg-[#f1eeee] p-[15px] '>
                         <GrLanguage />
                     </div>
                     <div className=''>

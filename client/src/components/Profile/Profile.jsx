@@ -28,7 +28,7 @@ const Profile = () => {
         onClick={(e) => handleMenuToggle(e)}
         className='profile 
     h-[48px] rounded-[30px] flex items-center border-[1px] border-[#c6c5c5] py-[8px] pr-[8px] pl-[14px]
-    ease-in transition-all duration-100
+    ease-in transition-all duration-100 text-black
     '>
         <div>
           <AiOutlineMenu />
