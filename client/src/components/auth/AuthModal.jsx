@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { IoMdClose } from 'react-icons/io'
 import { useSelector, useDispatch } from 'react-redux'
-import FormInput from '../FormInput/FormInput'
+
 import { setAuthModalFalse, setAuthModalTrue, setToggleModal, setUserInfo } from '../../store/slices/AuthSlice'
 import { checkUser, createUser, login } from '../../utils/api'
+import FormInput from './FormInput/FormInput'
 
 const AuthModal = ({ toggle, setToggle }) => {
     const { isAuth, toggleAuthenticated, userInfo } = useSelector((state) => state.auth)

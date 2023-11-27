@@ -63,7 +63,7 @@ const router = createBrowserRouter([
       },
       {
         element: <LayoutEdit />,
-        path: "/editresidency",
+        path: "/editresidency/:propertyId",
         children: [
           {
             index: true,

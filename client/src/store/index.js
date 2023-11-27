@@ -3,11 +3,13 @@ import authReducer from '../store/slices/AuthSlice'
 import CreateProcessReducer from '../store/slices/ProcessSlice'
 import StepReducer from'../store/slices/StepSlice'
 import reservationReducer from '../store/slices/Reservation'
+import EditPropReducer from '../store/slices/EditPropSlice'
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     CreateProcess:CreateProcessReducer,
     StepSlice:StepReducer,
-    reservation:reservationReducer
+    reservation:reservationReducer,
+    EditProp:EditPropReducer
   },
 })

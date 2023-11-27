@@ -94,7 +94,31 @@ export const getResidency = asyncHandler(async (req, res) => {
 
 export const deleteResidency = asyncHandler(async(req,res)=>{
   const {id} = req.params
+  const {emailUser} = req.body
+
+  console.log(req.body)
   try {
+
+  const reservation = await prisma.reservation.deleteMany({
+    where:{
+      ResidencyId:id
+    }
+  })
+  
+  const user = await prisma.user.findUnique({
+      where: { email:emailUser },
+  });
+   await prisma.user.update({
+    where:{
+      email:emailUser
+    },
+    data:{
+      favResidenciesID:{
+        set: user.favResidenciesID.filter((favId) => favId !== id),
+      }
+    }
+  })
+
     const {photos} = await prisma.residency.findFirst({
       where:{
         id:id
@@ -110,10 +134,36 @@ export const deleteResidency = asyncHandler(async(req,res)=>{
         });
     }));
   }
+
+
+
     const residency = await prisma.residency.delete({
       where:{id:id}
     })
     if(residency){
+      res.status(200).send(residency);
+    }else{
+      res.status(404).send({ error: 'Residency not found' });
+    }
+  } catch (error) {
+    throw new Error(error.message);
+  }
+})
+
+export const updateResidency  = asyncHandler(async(req,res)=>{
+  const {id} = req.params
+  const data = req.body
+
+  console.log(data)
+
+  try {
+    const residency = await prisma.residency.update({
+      where:{
+        id:id
+      },
+      data:data
+    })
+     if(residency){
       res.status(200).send(residency);
     }else{
       res.status(404).send({ error: 'Residency not found' });

@@ -5,6 +5,7 @@ import FilterHosting from '../../../components/FilterHosting/FilterHosting';
 import useProperties from '../../../hooks/useProperties';
 import { format } from 'date-fns';
 import ActionHosting from '../../../components/actionHosting/actionHosting';
+import { Link } from 'react-router-dom';
 
 
 
@@ -19,10 +20,12 @@ const Listing = () => {
                 field: 'listing',
                 headerName: 'LISTINGS',
                 width: 240,
-                renderCell: (params) => (<div className='flex w-[230px] items-center' >
-                    <img src={params.row.listing} className='w-[52px] rounded-md' />
-                    <span className='truncate'>{params.row.listingTitle}</span>
-                </div>)
+                renderCell: (params) => (<Link to={`/editresidency/${params.row.id}`}>
+                    <div onCl className='flex w-[230px] items-center' >
+                        <img src={params.row.listing} className='w-[52px] rounded-md' />
+                        <span className='truncate'>{params.row.listingTitle}</span>
+                    </div>
+                </Link>)
             },
             {
                 field: 'baths',

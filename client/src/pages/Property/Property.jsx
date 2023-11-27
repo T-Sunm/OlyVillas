@@ -10,6 +10,7 @@ import TripScheduler from '../../components/TripScheduler/TripScheduler'
 import { useDispatch, useSelector } from 'react-redux'
 import { setEndDate, setPrice, setResidencyId, setStartDate, setTripInfo } from '../../store/slices/Reservation'
 import { toast } from 'react-toastify'
+import useProperty from '../../hooks/useProperty'
 
 const Property = () => {
 
@@ -21,7 +22,7 @@ const Property = () => {
         ResidencyId: propertyId
     };
 
-    const { data, isLoading, isError } = useQuery(["resd", propertyId], () => getProperty(propertyId))
+    const { data, isLoading, isError } = useProperty(propertyId)
 
     const { data: dataReservation, isLoadingReservation, isError: ReservationError } = useQuery(["reservation", propertyId], () => getReservation(params))
 

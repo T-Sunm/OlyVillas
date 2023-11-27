@@ -11,6 +11,9 @@ const hero_sliders = [
   {
     imagePath: "./hero-image4.png",
   },
+  {
+    imagePath: "./hero-image4.png",
+  },
 ];
 
 export default hero_sliders;

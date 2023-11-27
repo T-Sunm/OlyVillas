@@ -1,9 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState ={
-    userEmail:localStorage.getItem('UserInfo')?
-    JSON.parse(localStorage.getItem('UserInfo')).user.email:
-    null,
+const initialState = {
     locationType:undefined,
     placeType:undefined,
     locationData:{lng:0, lat:0},
@@ -16,13 +13,10 @@ const initialState ={
     price:10
 }
 
-export const createProcessSlice = createSlice({
-    name:'CreateProcess',
+export const EditPropSlice = createSlice({
+    name:'EditProp',
     initialState,
     reducers:{
-        setUserEmail:(state,action)=>{
-            state.userEmail = action.payload
-        },
         setLocationType:(state,action)=>{
             state.locationType = action.payload
         },
@@ -57,20 +51,18 @@ export const createProcessSlice = createSlice({
             state.price = action.payload
         },
     }
+    
 })
 
-export const { 
-            setUserEmail,
-            setLocationType,
-            setPlaceType ,
-            setLocation,
-            setMapData,
-            setPlaceSpace,
-            setPlaceAmeneties,
-            setPhotos,
-            removePhotos,
-            setTitle,
-            setDescription,
-            setPrice
-            } = createProcessSlice.actions;
-export default createProcessSlice.reducer
+export const {setTitle,
+    setLocationType,
+    setPlaceType,
+    setLocation,
+    setMapData,
+    setPlaceSpace,
+    setPlaceAmeneties,
+    setPhotos,
+    removePhotos,
+    setDescription,
+    setPrice } = EditPropSlice.actions
+export default EditPropSlice.reducer
