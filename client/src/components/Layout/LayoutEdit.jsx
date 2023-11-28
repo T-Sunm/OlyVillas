@@ -1,11 +1,12 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import Footer from '../Footer/Footer'
 import Navigation from '../Header/Navigation'
 import Sidebar from '../Sidebar/Sidebar'
 
 
 const LayoutEdit = () => {
+
     return (
         <div>
             <Navigation />

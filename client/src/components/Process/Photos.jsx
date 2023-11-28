@@ -23,7 +23,6 @@ const Photos = () => {
     console.log(photos)
 
     const dispatch = useDispatch()
-    console.log(photos)
 
     const removePhoto = (name) => {
         dispatch(removePhotos(name))

@@ -1,13 +1,15 @@
 import { IoIosArrowDown } from "react-icons/io";
 import { BsFillHouseGearFill } from "react-icons/bs";
+import { IoIosArrowBack } from "react-icons/io";
 const data = [
     {
-        title:"Change listing",
-        icon:<IoIosArrowDown/>
-    },{
-        title:"Listing details",
-        icon:<BsFillHouseGearFill/>,
-        children:[
+        title: "Change listing",
+        icon: <IoIosArrowDown />
+    },
+    {
+        title: "Listing details",
+        icon: <BsFillHouseGearFill />,
+        children: [
             {
                 title: "Photos"
             },
@@ -24,6 +26,15 @@ const data = [
                 title: "Property and rooms"
             }
         ]
+    },
+    {
+        title: "Photos",
+        icon: <IoIosArrowBack />,
+        children: [
+            {
+                title: "All photos"
+            }
+        ],
     }
 ]
 

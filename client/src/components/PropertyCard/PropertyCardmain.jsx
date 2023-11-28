@@ -58,7 +58,7 @@ const PropertyCardmain = ({ card, number, reservation, onAction }) => {
                         {Array.isArray(card.photos) && (
                             card.photos.map(photo => (
                                 <SwiperSlide key={photo} className=''>
-                                    <img src={photo} className='h-[250px] w-[100%] object-cover rounded-lg' />
+                                    <img src={photo.url} className='h-[250px] w-[100%] object-cover rounded-lg' />
                                 </SwiperSlide>
                             ))
                         )}

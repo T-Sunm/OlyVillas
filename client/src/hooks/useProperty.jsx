@@ -4,7 +4,7 @@ import { getProperty } from '../utils/api'
 
 const useProperty = (propertyId) => {
     const { data, isLoading, isError, refetch, isSuccess } = useQuery(
-        ["resd", propertyId],
+        ["allProperties", propertyId],
         () => getProperty(propertyId),
         {
             refetchOnWindowFocus: false

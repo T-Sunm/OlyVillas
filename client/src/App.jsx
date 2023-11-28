@@ -22,6 +22,7 @@ import Layout2 from "./components/Layout/Layout2";
 import Listing from "./pages/Hosting/Listing/Listing";
 import EditResidency from "./pages/Hosting/Editresidency/EditResidency";
 import LayoutEdit from "./components/Layout/LayoutEdit";
+import EditPhotos from "./pages/Hosting/Editresidency/EditPhotos/EditPhotos";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -67,8 +68,12 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <EditResidency />
+            element: <EditResidency />,
           },
+          {
+            path: "/editresidency/:propertyId/photos",
+            element: <EditPhotos />
+          }
         ]
       },
       {

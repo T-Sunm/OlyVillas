@@ -52,7 +52,6 @@ export const createResidency = asyncHandler(async (req, res) => {
   } catch (error) {
     if (error.code === "P2002") {
       console.log(error)
-
     }
     throw new Error(error.message);
   }
@@ -99,12 +98,14 @@ export const deleteResidency = asyncHandler(async(req,res)=>{
   console.log(req.body)
   try {
 
+    // xóa các reservation của house này
   const reservation = await prisma.reservation.deleteMany({
     where:{
       ResidencyId:id
     }
   })
   
+  // cập nhật nhà yêu thích của User
   const user = await prisma.user.findUnique({
       where: { email:emailUser },
   });
@@ -119,6 +120,7 @@ export const deleteResidency = asyncHandler(async(req,res)=>{
     }
   })
 
+  // xóa ảnh của nhà này
     const {photos} = await prisma.residency.findFirst({
       where:{
         id:id
@@ -135,8 +137,6 @@ export const deleteResidency = asyncHandler(async(req,res)=>{
     }));
   }
 
-
-
     const residency = await prisma.residency.delete({
       where:{id:id}
     })
@@ -149,6 +149,103 @@ export const deleteResidency = asyncHandler(async(req,res)=>{
     throw new Error(error.message);
   }
 })
+
+export const deleteImageRes = asyncHandler(async(req,res)=>{
+  const {residencyId} = req.params
+  const {idImage}= req.body
+
+  console.log(residencyId,idImage)
+    try {
+        const {photos} = await prisma.residency.findFirst({
+        where:{
+          id:residencyId
+        }
+      })
+
+      // kiểm tra xem trong obj có obj nào trong mảng có thuộc tính id === idImage
+      if(photos.some((photo) => photo.public_id=== idImage) ){
+        await cloudinary.uploader.destroy(idImage)
+        .catch(err=>{
+          console.error('Error deleting photo:', err);
+        })
+      }
+
+      const updatedPhotos = photos.filter(photo => photo.public_id !== idImage);
+      const residency = await prisma.residency.update({
+        where:{
+          id:residencyId
+        },
+        data:{
+          photos:updatedPhotos
+        }
+      })
+      if(residency){
+        res.status(200).send(residency);
+      }else{
+        res.status(404).send({ error: 'Residency not found' });
+      }
+    } catch (error) {
+      throw new Error(error.message)
+    }
+})
+
+export const updateImage = asyncHandler(async () => {
+  const { residencyId } = req.params;
+  const { photo } = req.body;
+
+  try {
+    // Tìm kiếm residency
+    const residency = await prisma.residency.findUnique({
+      where: {
+        id: residencyId
+      }
+    });
+
+    if (!residency) {
+      return res.status(404).send({ error: 'Residency not found' });
+    }
+
+    // Hàm tải ảnh lên Cloudinary
+    const uploadImage = async (image) => {
+      try {
+        const uploadedResponse = await cloudinary.uploader.upload(image, {
+          upload_preset: 'puqkrne3'
+        });
+        console.log(uploadedResponse);
+        return {
+          public_id: uploadedResponse.public_id,
+          url: uploadedResponse.secure_url
+        };
+      } catch (uploadError) {
+        throw new Error(`Error uploading image: ${uploadError.message}`);
+      }
+    };
+
+    // Thực hiện tải ảnh
+    const upload = await uploadImage(photo);
+    residency.photos.push(upload);
+
+    // Cập nhật residency
+    const updatedResidency = await prisma.residency.update({
+      where: {
+        id: residencyId
+      },
+      data: {
+        photos: residency.photos
+      }
+    });
+
+    res.status(200).send(updatedResidency);
+
+  } catch (error) {
+    // Xử lý các loại lỗi khác nhau
+    if (error.message.startsWith('Error uploading image:')) {
+      res.status(500).send({ error: error.message });
+    } else {
+      res.status(500).send({ error: 'An unexpected error occurred' });
+    }
+  }
+});
 
 export const updateResidency  = asyncHandler(async(req,res)=>{
   const {id} = req.params
@@ -172,3 +269,4 @@ export const updateResidency  = asyncHandler(async(req,res)=>{
     throw new Error(error.message);
   }
 })
+

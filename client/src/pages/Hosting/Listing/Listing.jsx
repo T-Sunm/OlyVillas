@@ -70,7 +70,7 @@ const Listing = () => {
         }
         return data.map((res, i) => ({
             id: res.id,
-            listing: res.photos[0],
+            listing: res.photos[0]?.url,
             listingTitle: res.title,
             baths: res.placeSpace.bathrooms,
             beds: res.placeSpace.beds,

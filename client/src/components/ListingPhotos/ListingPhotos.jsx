@@ -12,7 +12,7 @@ const ListingPhotos = ({ photos }) => {
                             className='cursor-pointer'
                             onClick={() => setCurrentPhoto(index)}
                         >
-                            <img src={photo} alt='listing' className='w-full h-full object-fill' />
+                            <img src={photo.url} alt='listing' className='w-full h-full object-fill' />
                         </li>
                     ))}
                 </ul>
