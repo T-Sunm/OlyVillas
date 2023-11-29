@@ -189,10 +189,11 @@ export const deleteImageRes = asyncHandler(async(req,res)=>{
     }
 })
 
-export const updateImage = asyncHandler(async () => {
+export const updateImage = asyncHandler(async (req,res) => {
   const { residencyId } = req.params;
   const { photo } = req.body;
 
+  console.log(photo)
   try {
     // Tìm kiếm residency
     const residency = await prisma.residency.findUnique({

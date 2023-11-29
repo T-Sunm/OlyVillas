@@ -36,7 +36,7 @@ export const EditPropSlice = createSlice({
             state.placeAmeneties = action.payload
         },
         setPhotos:(state,action)=>{
-            state.photos = state.photos.concat(action.payload)
+            state.photos = action.payload
         },
         removePhotos:(state,action)=>{
             state.photos= state.photos.filter(file => file !== action.payload)

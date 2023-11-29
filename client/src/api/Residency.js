@@ -52,11 +52,11 @@ export const deleteImageResy = async(ResidencyId,idImage)=>{
     }
 }
 
-export const updateImageResy = async(ResidencyId,idImage)=>{
+export const updateImageResy = async(ResidencyId,photo)=>{
     try {
-        console.log(ResidencyId,idImage)
-        const body = {idImage}
-        const result = await api.delete(`/updateResidency/${ResidencyId}/createImages`,{ data: body })
+        console.log(ResidencyId,photo)
+        const body = {photo}
+        const result = await api.put(`/updateResidency/${ResidencyId}/createImages`, body )
         if (result.status === 404 || result.status=== 500){
             throw result.data
         }

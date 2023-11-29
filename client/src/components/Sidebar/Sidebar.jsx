@@ -26,8 +26,6 @@ const Sidebar = () => {
         return CurrentData
     }, [location, propertyId])
 
-
-    console.log(currentData, propertyId)
     return (
         <div >
             <Accordion

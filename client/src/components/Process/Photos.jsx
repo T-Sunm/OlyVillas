@@ -27,9 +27,7 @@ const Photos = () => {
     const removePhoto = (name) => {
         dispatch(removePhotos(name))
     }
-    const handleNext = () => {
-        dispatch(setStepIncrease())
-    }
+
     return (
         <>
             <div className='flex flex-col h-[70vh] gap-5 items-center justify-center'>
