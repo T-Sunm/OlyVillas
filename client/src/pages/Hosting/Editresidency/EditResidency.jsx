@@ -6,9 +6,7 @@ import Amenities from '../../../components/EditDetails/Amenities/Amenities'
 import useProperty from '../../../hooks/useProperty'
 import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { setDescription, setLocation, setLocationType, setMapData, setPhotos, setPlaceAmeneties, setPlaceSpace, setPlaceType, setPrice, setTitle } from '../../../store/slices/EditPropSlice'
-import { updateResidency } from '../../../api/Residency'
-import { useMutation, useQueryClient } from 'react-query'
+import { setDescription, setLocation, setLocationType, setMapData, setPhotos, setPlaceAmeneties, setPlaceSpace, setPlaceType, setPreLocationData, setPreMapData, setPrice, setTitle } from '../../../store/slices/EditPropSlice'
 
 const EditResidency = () => {
 
@@ -27,6 +25,8 @@ const EditResidency = () => {
         dispatch(setPhotos(data.photos))
         dispatch(setDescription(data.description))
         dispatch(setPrice(data.price))
+        dispatch(setPreLocationData(data.locationData))
+        dispatch(setPreMapData(data.mapData))
     }
     console.log(data)
 

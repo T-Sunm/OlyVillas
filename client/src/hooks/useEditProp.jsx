@@ -5,7 +5,12 @@ import { queryClient, updateResidency } from '../api/Residency'
 import { useSelector } from 'react-redux'
 
 const useEditProp = (propertyId) => {
-    const stateEdit = useSelector((state) => state.EditProp)
+
+
+    const stateEdit = useSelector((state) => {
+        const { preLocationData, preMapData, ...rest } = state.EditProp;
+        return rest;
+    });
     const { mutate: mutateEditResidency } = useMutation({
         mutationFn: (id) => updateResidency(id, stateEdit),
         onError: ({ response }) => toast.error(response.data.message, { position: "bottom-right" }),

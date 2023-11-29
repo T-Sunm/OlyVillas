@@ -1,11 +1,13 @@
 import { useControl, Marker } from "react-map-gl";
 import MapboxGeocoder, { GeocoderOptions } from "@mapbox/mapbox-gl-geocoder";
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
+import { setPreLocationData, setPreMapData } from "../../../store/slices/EditPropSlice";
+import { useDispatch } from "react-redux";
 
 
 /* eslint-disable complexity,max-statements */
 export default function GeocoderControl() {
-
+  const dispatch = useDispatch()
   const ctrl = new MapboxGeocoder({
     accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,
     marker: false,
@@ -36,7 +38,8 @@ export default function GeocoderControl() {
         }
       })
     })
-    console.log(data)
+    dispatch(setPreLocationData({ lng: longlat[0], lat: longlat[1] }))
+    dispatch(setPreMapData({ ...data }))
   })
   return null
 }

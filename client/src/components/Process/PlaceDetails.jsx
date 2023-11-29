@@ -42,6 +42,7 @@ const PlaceDetails = () => {
                         type='text'
                         item={item}
                         setItem={setItem}
+                        value={mapData?.street_address}
                     />
                     <FormInput
                         isListing
@@ -51,6 +52,7 @@ const PlaceDetails = () => {
                         type='text'
                         item={item}
                         setItem={setItem}
+                        value={mapData?.address_extra}
                     />
                     <FormInput
                         isListing

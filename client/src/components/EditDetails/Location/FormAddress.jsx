@@ -3,13 +3,42 @@ import FormInput from '../../FormInput/FormInput'
 import { IoMdClose } from "react-icons/io"
 import Map, { GeolocateControl, Marker, NavigationControl } from 'react-map-gl';
 import GeocoderControl from './geocoder-control';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLocation, setMapData, setPreLocationData, setPreMapData } from '../../../store/slices/EditPropSlice';
+import useEditProp from '../../../hooks/useEditProp';
+import { useParams } from 'react-router-dom';
 
 const FormAddress = ({ toggle, setToggle }) => {
     const mapRef = useRef()
+    const dispatch = useDispatch()
     const mapboxToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
-    const { lng, lat } = useSelector((state) => state.CreateProcess.locationData)
+    const { lng, lat } = useSelector((state) => state.EditProp.preLocationData)
+    const mapData = useSelector((state) => state.EditProp.preMapData)
+    const OriMapData = useSelector((state) => state.EditProp.mapData)
+    const { lng: OriLng, lat: OriLat } = useSelector((state) => state.EditProp.locationData)
+    const { editProperty } = useEditProp();
+    const { propertyId } = useParams()
     const [item, setItem] = useState('')
+
+    const handleChange = (name, value) => {
+        dispatch(setPreMapData({ ...mapData, [name]: value }))
+    }
+
+    const handleClose = () => {
+        if (lng !== OriLng || lat !== OriLat || JSON.stringify(mapData) !== JSON.stringify(OriMapData)) {
+            dispatch(setPreMapData(OriMapData))
+            dispatch(setPreLocationData({ lng: OriLng, lat: OriLat }))
+        }
+        setToggle(false)
+    }
+
+    const handleSave = async () => {
+        await dispatch(setLocation({ lng, lat }));
+        await dispatch(setMapData(mapData));
+        editProperty(propertyId)
+        setToggle(false)
+
+    };
     return (
         <div className='relative z-50'>
             <div className='fixed inset-0 bg-gray-300 opacity-75'></div>
@@ -18,7 +47,7 @@ const FormAddress = ({ toggle, setToggle }) => {
                     <div className=' flex flex-col h-full overflow-auto no-scrollbar pt-5 '>
                         <div className='bg-white flex flex-col w-[550px] rounded-[12px]'>
                             <div className='px-[24px] pb-[24px]'>
-                                <span onClick={() => setToggle(false)} className='min-h-[64px] flex flex-col justify-center pt-[10px]'><IoMdClose /></span>
+                                <span onClick={handleClose} className='min-h-[64px] flex flex-col justify-center pt-[10px]'><IoMdClose /></span>
                                 <div className='mb-[32px]'>
                                     <span className='text-[26px] font-semibold '>
                                         Address
@@ -27,62 +56,64 @@ const FormAddress = ({ toggle, setToggle }) => {
                                 <div className='flex flex-col gap-3'>
                                     <div className={`w-[100%]  ${item === "country" ? '' : 'border border-t-[#b0b0b0] border-x-[#b0b0b0] rounded-lg'}`}>
                                         <FormInput
-                                            isListing
+
                                             name="country"
                                             title={"Country"}
-                                            // setValue={handleChange}
+                                            setValue={handleChange}
                                             type='text'
-                                            // value={mapData?.country}
+                                            value={mapData?.country}
                                             item={item}
                                             setItem={setItem}
                                         />
                                     </div>
                                     <div className={`flex flex-col w-[100%]  border border-t-[#b0b0b0] border-x-[#b0b0b0]  rounded-lg overflow-hidden`}>
                                         <FormInput
-                                            isListing
+
                                             title="Street address"
                                             name="street_address"
-                                            // setValue={handleChange}
+                                            setValue={handleChange}
                                             type='text'
                                             item={item}
+                                            value={mapData?.street_address}
                                             setItem={setItem}
                                         />
                                         <FormInput
-                                            isListing
+
                                             title="Apt,floor,bldg (if applicable)"
                                             name="address_extra"
-                                            // setValue={handleChange}
+                                            setValue={handleChange}
                                             type='text'
                                             item={item}
                                             setItem={setItem}
+                                            value={mapData?.address_extra}
                                         />
                                         <FormInput
-                                            isListing
+
                                             title="City/town/village (if applicable)"
                                             name="locality"
-                                            // setValue={handleChange}
+                                            setValue={handleChange}
                                             type='text'
-                                            // value={mapData?.locality}
+                                            value={mapData?.locality}
                                             item={item}
                                             setItem={setItem}
                                         />
                                         <FormInput
-                                            isListing
+
                                             title="Province / state / territory (if applicable)"
                                             name="place"
-                                            // setValue={handleChange}
+                                            setValue={handleChange}
                                             type='text'
-                                            // value={mapData?.place}
+                                            value={mapData?.place}
                                             item={item}
                                             setItem={setItem}
                                         />
                                         <FormInput
-                                            isListing
+
                                             title="Postal code (if applicable)"
                                             name="postcode"
-                                            // setValue={handleChange}
+                                            setValue={handleChange}
                                             type='text'
-                                            // value={mapData?.postcode}
+                                            value={mapData?.postcode}
                                             item={item}
                                             setItem={setItem}
                                         />
@@ -92,7 +123,9 @@ const FormAddress = ({ toggle, setToggle }) => {
                             </div>
 
                             <div className='flex justify-end px-[24px] pb-[24px]'>
-                                <button className='py-[14px] px-[24px] bg-black text-white rounded-[8px]'>
+                                <button
+                                    onClick={handleSave}
+                                    className='py-[14px] px-[24px] bg-black text-white rounded-[8px]'>
                                     Save
                                 </button>
                             </div>
@@ -103,8 +136,8 @@ const FormAddress = ({ toggle, setToggle }) => {
                         <Map
                             ref={mapRef}
                             initialViewState={{
-                                longitude: 108.206230,
-                                latitude: 16.047079,
+                                longitude: lng,
+                                latitude: lat,
                                 zoom: 12
                             }}
                             mapStyle="mapbox://styles/mapbox/streets-v11"
@@ -113,15 +146,15 @@ const FormAddress = ({ toggle, setToggle }) => {
                         >
 
                             <Marker
-                                longitude={108.206230}
-                                latitude={16.047079}
+                                longitude={lng}
+                                latitude={lat}
                                 draggable
-                            // onDragEnd={(e) => dispatch(setLocation({ lng: e.lngLat.lng, lat: e.lngLat.lat }))}
+                                onDragEnd={(e) => dispatch(setPreLocationData({ lng: e.lngLat.lng, lat: e.lngLat.lat }))}
                             />
                             <NavigationControl position='bottom-right' />
                             <GeolocateControl position='top-left'
                                 trackUserLocation
-                            // onGeolocate={(e) => dispatch(setLocation({ lng: e.coords.longitude, lat: e.coords.latitude }))}
+                                onGeolocate={(e) => dispatch(setPreLocationData({ lng: e.coords.longitude, lat: e.coords.latitude }))}
                             />
                             <GeocoderControl />
 

@@ -10,7 +10,9 @@ const initialState = {
     photos:[],
     title:"",
     description:"",
-    price:10
+    price:10,
+    preMapData:undefined,
+    preLocationData:{lng:0, lat:0}
 }
 
 export const EditPropSlice = createSlice({
@@ -50,6 +52,12 @@ export const EditPropSlice = createSlice({
         setPrice:(state,action)=>{
             state.price = action.payload
         },
+        setPreLocationData:(state , action)=>{
+            state.preLocationData = action.payload
+        },
+        setPreMapData:(state , action)=>{
+            state.preMapData = action.payload
+        }
     }
     
 })
@@ -64,5 +72,5 @@ export const {setTitle,
     setPhotos,
     removePhotos,
     setDescription,
-    setPrice } = EditPropSlice.actions
+    setPrice,setPreLocationData,setPreMapData } = EditPropSlice.actions
 export default EditPropSlice.reducer

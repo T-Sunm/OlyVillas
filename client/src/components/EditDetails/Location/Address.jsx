@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import FormAddress from './FormAddress'
+import { useSelector } from 'react-redux'
 
 const Address = () => {
 
     const [toggle, setToggle] = useState(false)
 
-
+    const OriMapData = useSelector((state) => state.EditProp.mapData)
 
     return (
         <>
@@ -19,7 +20,7 @@ const Address = () => {
                             Address
                         </span>
                         <span className='text-[#888888] text-[14px] mt-[4px]'>
-                            34 Nguyễn Hữu Thọ, Hòa Thuận Nam, Hải Châu, Đà Nẵng 550000, Vietnam
+                            {`${OriMapData.street_address}`}  {OriMapData.address_extra !== "" && `(${OriMapData.address_extra})`}, {`${OriMapData.locality}, ${OriMapData.place} ${OriMapData.postcode}, ${OriMapData.country}`}
                         </span>
                     </div>
                     <div onClick={() => setToggle(true)}>
