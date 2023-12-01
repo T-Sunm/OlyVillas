@@ -70,7 +70,7 @@ const PlaceDetails = () => {
                         name="place"
                         setValue={handleChange}
                         type='text'
-                        value={mapData?.place}
+                        value={mapData?.region ? mapData?.place + ", " + mapData?.region : mapData?.place}
                         item={item}
                         setItem={setItem}
                     />

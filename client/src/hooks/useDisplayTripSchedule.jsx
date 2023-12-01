@@ -6,7 +6,6 @@ const useDisplayTripSchedule = () => {
     //to handle shadow of header
     useEffect(() => {
         function handleScroll() {
-            console.log(window.scrollY)
             if (window.scrollY > 8) {
                 setPosition("sticky")
             } else {

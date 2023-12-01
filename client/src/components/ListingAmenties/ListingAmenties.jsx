@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { AmenetiesType } from '../../data/Amenities'
 
 const ListingAmenties = ({ amenties }) => {
+
+    console.log(amenties)
 
     const getSvgPathByName = (name) => {
         for (const amenity of AmenetiesType) {
@@ -14,21 +16,36 @@ const ListingAmenties = ({ amenties }) => {
         return null
     }
 
+    const getAmenities = (obj) => {
+        const resultArray = [];
+
+        for (const key in obj) {
+            if (Array.isArray(obj[key])) {
+                const arr = obj[key];
+                resultArray.push(...arr);
+            }
+        }
+
+        return resultArray;
+    }
+
+    const allAmenities = getAmenities(amenties)
+
+
+    console.log(allAmenities)
+
     return (
         <div className='flex flex-col gap-2'>
             <h4 className='text-xl font-semibold'>
-                Amenties
+                What this place offers
             </h4>
-            <ul className='grid grid-cols-5 gap-2'>
-                {amenties.map((amenity) => (
-                    <li key={amenity}
-                        className='border border-gray-300 p-3 rounded-lg flex flex-col justify-start items-start'
-                    >
-                        {getSvgPathByName(amenity)}
-                        <span>{amenity}</span>
-                    </li>
+            <div className='grid grid-cols-2'>
+                {amenties && allAmenities.splice(0, 10).map(amenties => (
+                    <div>
+                        {amenties}
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     )
 }

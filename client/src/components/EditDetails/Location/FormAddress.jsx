@@ -98,12 +98,11 @@ const FormAddress = ({ toggle, setToggle }) => {
                                             setItem={setItem}
                                         />
                                         <FormInput
-
                                             title="Province / state / territory (if applicable)"
                                             name="place"
                                             setValue={handleChange}
                                             type='text'
-                                            value={mapData?.place}
+                                            value={mapData.region ? mapData?.place + ", " + mapData?.region : mapData?.place}
                                             item={item}
                                             setItem={setItem}
                                         />

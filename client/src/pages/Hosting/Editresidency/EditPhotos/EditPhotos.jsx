@@ -1,9 +1,9 @@
 import React, { useRef } from 'react'
 import { HiXMark } from 'react-icons/hi2'
-import { useMutation, useQueryClient } from 'react-query'
+import { useMutation } from 'react-query'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteImageResy, queryClient, updateImageResy } from '../../../../api/Residency'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import useProperty from '../../../../hooks/useProperty'
 import { setPhotos } from '../../../../store/slices/EditPropSlice'
@@ -11,8 +11,8 @@ import { setPhotos } from '../../../../store/slices/EditPropSlice'
 const EditPhotos = () => {
     const { propertyId } = useParams()
     const { data, isLoading, isError, isSuccess } = useProperty(propertyId)
+
     const dispatch = useDispatch()
-    const navigation = useNavigate()
     if (isSuccess) {
         dispatch(setPhotos(data.photos))
     }

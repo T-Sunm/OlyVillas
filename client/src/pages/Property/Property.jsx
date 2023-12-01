@@ -28,7 +28,6 @@ const Property = () => {
 
     const { tripInfo, price, startDate, endDate } = useSelector((state) => state.reservation)
 
-    console.log(propertyId, dataReservation)
     const { userInfo } = useSelector((state) => state.auth)
 
 

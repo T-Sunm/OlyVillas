@@ -9,7 +9,19 @@ const initialState ={
     locationData:{lng:0, lat:0},
     mapData:undefined,
     placeSpace:{bathrooms:1, beds:1, guetsts:4,bedrooms:1},
-    placeAmeneties:[],
+    placeAmeneties:{
+        Bathroom:[], 
+        BedroomandLaundry:[],
+        Entertainment:[],
+        HeatingandCooling:[],
+        HomeSafety:[],
+        InternetandOffice:[],
+        KitchenandDining:[],
+        LocationFeatures:[],
+        Outdoor:[],
+        ParkingandFacilities:[],
+        Services:[]
+    },
     photos:[],
     title:"",
     description:"",
@@ -39,6 +51,7 @@ export const createProcessSlice = createSlice({
             state.placeSpace = action.payload
         },
         setPlaceAmeneties:(state,action)=>{
+            
             state.placeAmeneties = action.payload
         },
         setPhotos:(state,action)=>{

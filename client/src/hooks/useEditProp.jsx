@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import { queryClient, updateResidency } from '../api/Residency'
 import { useSelector } from 'react-redux'
 
-const useEditProp = (propertyId) => {
+const useEditProp = () => {
 
 
     const stateEdit = useSelector((state) => {

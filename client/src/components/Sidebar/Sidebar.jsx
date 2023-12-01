@@ -19,7 +19,14 @@ const Sidebar = () => {
             const currentData = data.find(item => item.title === "Photos")
             currentData.linkBack = `/editresidency/${propertyId}/`
             CurrentData.push(data.find(item => item.title === "Photos"))
-        } else {
+
+        }
+        else if (location.pathname === `/editresidency/${propertyId}/amenities`) {
+            const currentData = data.find(item => item.title === "Amenities")
+            currentData.linkBack = `/editresidency/${propertyId}/`
+            CurrentData.push(data.find(item => item.title === "Amenities"))
+        }
+        else {
             CurrentData.push(data.find(item => item.title === "Change listing"))
             CurrentData.push(data.find(item => item.title === "Listing details"))
         }
@@ -38,7 +45,7 @@ const Sidebar = () => {
                     return (
                         <AccordionItem className={`accordionItem ${className}`} uuid={i} key={i}>
                             <AccordionItemHeading>
-                                {item.title === "Photos" ? (
+                                {item.title === "Photos" || item.title === "Amenities" ? (
                                     <AccordionItemButton className="flex bg-white w-full justify-start cursor-pointer items-center p-1 ">
                                         {/* just for getting state of item */}
 

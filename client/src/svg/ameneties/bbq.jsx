@@ -7,7 +7,7 @@ export default function Bbq() {
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       // viewBox="0 0 45 45"
-      width={45}
+      width={40}
       height={45}
       preserveAspectRatio="xMidYMid meet"
       style={{
@@ -16,6 +16,7 @@ export default function Bbq() {
         transform: "translate3d(0px, 0px, 0px)",
         contentVisibility: "visible",
       }}
+
     >
       <defs id="l_d_5235">
         <clipPath id="__lottie_element_2136">
@@ -36,18 +37,21 @@ export default function Bbq() {
           id="l_d_5284"
           transform="matrix(1,0,0,1,-24.75,-17.125)"
           opacity={1}
-          style={{ display: "block" }}
+          style={{ display: "block", fill: "white" }}
+          fillOpacity={0}
+
         >
-          <g id="l_d_5288" opacity={1} transform="matrix(1,0,0,1,33.5,48.5)">
+          <g id="l_d_5288" opacity={1} transform="matrix(1,0,0,1,33.5,48.5) " >
             <path
               id="l_d_5289"
               strokeLinecap="butt"
               strokeLinejoin="round"
               fillOpacity={0}
               stroke="rgb(34,34,34)"
-              strokeOpacity={1}
+              strokeOpacity={2}
               strokeWidth={2}
               d=" M2.5,-5.5 C2.5,-5.5 -2.5,5.5 -2.5,5.5"
+
             />
           </g>
           <g id="l_d_5290" opacity={1} transform="matrix(1,0,0,1,46.5,48.5)">
@@ -72,6 +76,7 @@ export default function Bbq() {
               strokeOpacity={1}
               strokeWidth={2}
               d=" M0,5.5 C0,5.5 0,-5.5 0,-5.5"
+
             />
           </g>
           <g id="l_d_5294" opacity={1} transform="matrix(1,0,0,1,40,38.5)">

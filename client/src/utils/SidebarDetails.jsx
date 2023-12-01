@@ -35,6 +35,49 @@ const data = [
                 title: "All photos"
             }
         ],
+    },
+    {
+        title: "Amenities",
+        icon: <IoIosArrowBack />,
+        children: [
+            {
+                title: "Popular"
+            },
+            {
+                title: "Bathroom"
+            },
+            {
+                title: "Bedroom and laundry"
+            },
+            {
+                title: "Entertainment"
+            },
+            {
+                title: "Heating and cooling"
+            },
+            {
+                title: "Home safety"
+            },
+            {
+                title: "Internet and office"
+            },
+            {
+                title: "Kitchen and dining"
+            },
+            {
+                title: "Location features"
+            },
+            {
+                title: "Outdoor"
+            },
+            {
+                title: "Parking and facilities"
+            },
+            {
+                title: "Services"
+            }
+
+        ],
     }
 ]
 

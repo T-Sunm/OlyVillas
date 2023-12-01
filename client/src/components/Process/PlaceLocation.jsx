@@ -38,7 +38,7 @@ const PlaceLocation = () => {
                     initialViewState={{
                         longitude: lng,
                         latitude: lat,
-                        zoom: 8
+                        zoom: 10
                     }}
                     mapStyle="mapbox://styles/mapbox/streets-v11"
                     mapboxAccessToken={mapboxToken}

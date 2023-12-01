@@ -23,6 +23,7 @@ import Listing from "./pages/Hosting/Listing/Listing";
 import EditResidency from "./pages/Hosting/Editresidency/EditResidency";
 import LayoutEdit from "./components/Layout/LayoutEdit";
 import EditPhotos from "./pages/Hosting/Editresidency/EditPhotos/EditPhotos";
+import EditAmenities from "./pages/Hosting/Editresidency/EditAmenities/EditAmenities";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
           {
             path: "/editresidency/:propertyId/photos",
             element: <EditPhotos />
+          },
+          {
+            path: "/editresidency/:propertyId/amenities",
+            element: <EditAmenities />
           }
         ]
       },
