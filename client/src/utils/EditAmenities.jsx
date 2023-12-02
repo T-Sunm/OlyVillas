@@ -323,7 +323,7 @@ const data = [
                 title: "Free street parking"
             },
             {
-                title: "Gym"
+                title: "Exercise equipment"
             },
             {
                 title: "Hot tub"

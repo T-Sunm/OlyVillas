@@ -45,6 +45,8 @@ const Property = () => {
 
     })
 
+    console.log(data)
+
     if (isLoading) {
         return (
             <div className="wrapper">
@@ -93,7 +95,7 @@ const Property = () => {
                                     </ul>
                                     <p>{data.description}</p>
                                     <ListingAmenties amenties={data.placeAmeneties} />
-                                    <LisingMap mapLocation={data?.locationData} />
+                                    <LisingMap mapLocation={data?.locationData} mapData={data?.mapData} />
                                 </div>
                                 <div className='w-[33.33333333333333%] ml-[8.33333333333333%]' style={{ position: "-webkit-sticky" }}>
                                     <TripScheduler price={data.price} mutate={mutate} dataReservation={dataReservation} />

@@ -37,7 +37,7 @@ export const AmenetiesType = [
       { name: "Free parking on premises", svgPath: <Parking />, group: "ParkingandFacilities" },
       { name: "Paid parking on premises", svgPath: <PaidParking />, group: "ParkingandFacilities" },
       { name: "Air conditioning", svgPath: <Ac />, group: "HeatingandCooling" },
-      { name: "Dedicated workplace", svgPath: <Workplace />, group: "InternetandOffice" },
+      { name: "Dedicated workspace", svgPath: <Workplace />, group: "InternetandOffice" },
     ],
   },
   {

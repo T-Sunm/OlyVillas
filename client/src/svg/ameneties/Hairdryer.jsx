@@ -1,6 +1,6 @@
 import React from 'react'
 
-const hairdryer = () => {
+const Hairdryer = () => {
     return (
         <svg id="l_d_5234"
             xmlns="http://www.w3.org/2000/svg"
@@ -18,4 +18,4 @@ const hairdryer = () => {
     )
 }
 
-export default hairdryer
+export default Hairdryer

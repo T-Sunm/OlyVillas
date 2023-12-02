@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPlaceAmeneties } from '../../../../store/slices/EditPropSlice';
 import useEditProp from '../../../../hooks/useEditProp';
+import { GoX } from "react-icons/go";
 const EditAmenities = () => {
 
     const placeAmeneties = useSelector((state) => state.EditProp.placeAmeneties)
@@ -58,12 +59,20 @@ const EditAmenities = () => {
                                 </div>
                                 <div className='flex justify-center items-center gap-5 '>
                                     <button
-                                        onClick={() => removeAmentity(itemChild.title, itemChild.key)}
-                                        className='border border-black rounded-full px-3 py-[5px] text-[#717171] hover:text-black'>
-                                        X
+                                        onClick={() => {
+                                            if (placeAmeneties[itemChild.key]?.includes(itemChild.title)) {
+                                                removeAmentity(itemChild.title, itemChild.key)
+                                            }
+                                        }}
+                                        className={`border border-[#717171] rounded-full p-2 text-[#717171] hover:text-black hover:border-black ${placeAmeneties[itemChild.key]?.includes(itemChild.title) ? '' : 'bg-black text-white'}`}>
+                                        <GoX />
                                     </button>
                                     <button
-                                        onClick={() => addAmentity(itemChild.title, itemChild.key)}
+                                        onClick={() => {
+                                            if (!placeAmeneties[itemChild.key]?.includes(itemChild.title)) {
+                                                addAmentity(itemChild.title, itemChild.key)
+                                            }
+                                        }}
                                         className={`border border-[#717171] rounded-full p-2 text-[#717171] hover:text-black hover:border-black ${placeAmeneties[itemChild.key]?.includes(itemChild.title) ? 'bg-black text-white' : ''}`}>
                                         <IoCheckmarkSharp />
                                     </button>
@@ -95,11 +104,21 @@ const EditAmenities = () => {
                                     </span>
                                 </div>
                                 <div className='flex justify-center items-center gap-5 '>
-                                    <button onClick={() => removeAmentity(itemChild.title, item.key)} className='border border-black rounded-full px-3 py-[5px] text-[#717171] hover:text-black'>
-                                        X
+                                    <button
+                                        onClick={() => {
+                                            if (placeAmeneties[item.key]?.includes(itemChild.title)) {
+                                                removeAmentity(itemChild.title, item.key)
+                                            }
+                                        }}
+                                        className={`border border-[#717171] rounded-full p-2 text-[#717171] hover:text-black hover:border-black ${placeAmeneties[item.key].includes(itemChild.title) ? '' : 'bg-black text-white'}`}>
+                                        <GoX />
                                     </button>
                                     <button
-                                        onClick={() => addAmentity(itemChild.title, item.key)}
+                                        onClick={() => {
+                                            if (!placeAmeneties[item.key]?.includes(itemChild.title)) {
+                                                addAmentity(itemChild.title, item.key);
+                                            }
+                                        }}
                                         className={`border border-[#717171] rounded-full p-2 text-[#717171] hover:text-black hover:border-black ${placeAmeneties[item.key]?.includes(itemChild.title) ? 'bg-black text-white' : ''}`}>
                                         <IoCheckmarkSharp />
                                     </button>

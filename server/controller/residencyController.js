@@ -162,6 +162,10 @@ export const deleteImageRes = asyncHandler(async(req,res)=>{
         }
       })
 
+    if (photos.length <= 5) {
+        return res.status(400).send({ error: 'Cannot delete image. There must be at least 5 photos.' });
+    }
+
       // kiểm tra xem trong obj có obj nào trong mảng có thuộc tính id === idImage
       if(photos.some((photo) => photo.public_id=== idImage) ){
         await cloudinary.uploader.destroy(idImage)

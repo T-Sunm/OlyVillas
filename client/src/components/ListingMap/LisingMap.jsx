@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import Map, { GeolocateControl, Marker, NavigationControl } from 'react-map-gl';
-const LisingMap = ({ mapLocation }) => {
+const LisingMap = ({ mapLocation, mapData }) => {
     const mapboxToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
     const pins = useMemo(() => {
 
@@ -13,7 +13,17 @@ const LisingMap = ({ mapLocation }) => {
     }, [mapLocation])
 
     return (
-        <div className='h-96 w-full'>
+        <div className='h-96 w-full '>
+            <div className='mb-[24px]'>
+                <div className='pb-[24px]'>
+                    <span className='text-[22px] font-semibold '>
+                        Where you’ll be
+                    </span>
+                </div>
+                <span>
+                    {mapData?.locality + ", " + mapData?.place + ", " + mapData?.region + ", " + mapData?.country}
+                </span>
+            </div>
             <Map initialViewState={{
                 longitude: mapLocation.lng,
                 latitude: mapLocation.lat,
