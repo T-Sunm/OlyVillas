@@ -7,6 +7,7 @@ import useProperty from '../../../hooks/useProperty'
 import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setDescription, setLocation, setLocationType, setMapData, setPhotos, setPlaceAmeneties, setPlaceSpace, setPlaceType, setPreLocationData, setPreMapData, setPrice, setTitle } from '../../../store/slices/EditPropSlice'
+import PropertyandRoom from '../../../components/EditDetails/PropertyandRooms/PropertyandRoom'
 
 const EditResidency = () => {
 
@@ -42,6 +43,7 @@ const EditResidency = () => {
             <ListingBasic />
             <Amenities />
             <Address />
+            <PropertyandRoom />
         </div>
     )
 }

@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
 import { prisma } from "../config/prismaConfig.js";
-import {cloudinary} from "../config/cloudinaryConfig.js"
+import { cloudinary } from "../config/cloudinaryConfig.js"
 export const createResidency = asyncHandler(async (req, res) => {
   const {
     title,
@@ -17,15 +17,15 @@ export const createResidency = asyncHandler(async (req, res) => {
   } = req.body.data;
   console.log(req.body.data);
 
-  const uploadImage = async (image)=>{
-    const uploadedResponse = await cloudinary.uploader.upload(image,{
-    upload_preset:'puqkrne3'
+  const uploadImage = async (image) => {
+    const uploadedResponse = await cloudinary.uploader.upload(image, {
+      upload_preset: 'puqkrne3'
     })
     console.log(uploadedResponse)
-  return {
-    public_id: uploadedResponse.public_id,
-    url:uploadedResponse.secure_url
-  }
+    return {
+      public_id: uploadedResponse.public_id,
+      url: uploadedResponse.secure_url
+    }
   }
 
   const uploads = await Promise.all(photos.map(photo => uploadImage(photo)));
@@ -41,11 +41,13 @@ export const createResidency = asyncHandler(async (req, res) => {
         locationData,
         locationType,
         mapData,
-        photos:uploads,
         placeSpace,
         placeType,
         placeAmeneties,
         owner: { connect: { email: userEmail } },
+        photos: {
+          create: uploads
+        }
       },
     });
     res.send({ message: "Residency created successfully", residency });
@@ -58,18 +60,79 @@ export const createResidency = asyncHandler(async (req, res) => {
 });
 
 export const getAllResidencies = asyncHandler(async (req, res) => {
-try {
+
+  let query = {}
+
+  const { placeSpace, mapData, startDate, endDate } = req.body
+
+  if (startDate && endDate) {
+    query.NOT = {
+      Reservations: {
+        some: {
+          OR: [
+            {
+              endDate: { gte: startDate },
+              startDate: { lte: startDate },
+              OR: [
+                { Status: "Pending" },
+                { Status: "Success" }
+              ]
+            },
+            {
+              startDate: { lte: endDate },
+              endDate: { gte: endDate },
+              OR: [
+                { Status: "Pending" },
+                { Status: "Success" }
+              ]
+            }
+          ]
+        }
+
+      }
+    }
+  }
+
+  try {
     const residencies = await prisma.residency.findMany({
-    // orderBy là sắp xếp
-    //  sắp xếp theo thời gian đăng giảm dần
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-  res.send(residencies);
-} catch (error) {
-  console.log(error)
-}
+      // orderBy là sắp xếp
+      //  sắp xếp theo thời gian đăng giảm dần
+      where: query,
+      include: {
+        Rating: true,
+        photos: true
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    let filteredResidencies = residencies
+    if (mapData) {
+      filteredResidencies = filteredResidencies.filter(residency => {
+        return Object.keys(mapData).every(key => {
+          if (mapData[key]) {
+            return residency.mapData?.[key] === mapData[key];
+          }
+          return true;
+        });
+      });
+    }
+
+    if (placeSpace) {
+      filteredResidencies = filteredResidencies.filter(residency => {
+        return Object.keys(placeSpace).every(key => {
+          if (placeSpace[key].quantity !== 0) {
+            return residency.placeSpace?.[key].quantity === placeSpace[key].quantity
+          }
+          return true
+        })
+      })
+    }
+    res.send(filteredResidencies);
+  } catch (error) {
+    console.log(error)
+  }
 });
 
 export const getResidency = asyncHandler(async (req, res) => {
@@ -77,13 +140,15 @@ export const getResidency = asyncHandler(async (req, res) => {
   try {
     const residency = await prisma.residency.findUnique({
       where: { id: id },
-      include:{
-        owner:true
+      include: {
+        owner: true,
+        Rating: true,
+        photos: true
       }
     });
-    if(residency){
+    if (residency) {
       res.status(200).send(residency);
-    }else{
+    } else {
       res.status(404).send({ error: 'Residency not found' });
     }
   } catch (error) {
@@ -91,58 +156,73 @@ export const getResidency = asyncHandler(async (req, res) => {
   }
 });
 
-export const deleteResidency = asyncHandler(async(req,res)=>{
-  const {id} = req.params
-  const {emailUser} = req.body
+export const deleteResidency = asyncHandler(async (req, res) => {
+  const { id } = req.params
+  const { emailUser } = req.body
 
   console.log(req.body)
   try {
 
     // xóa các reservation của house này
-  const reservation = await prisma.reservation.deleteMany({
-    where:{
-      ResidencyId:id
-    }
-  })
-  
-  // cập nhật nhà yêu thích của User
-  const user = await prisma.user.findUnique({
-      where: { email:emailUser },
-  });
-   await prisma.user.update({
-    where:{
-      email:emailUser
-    },
-    data:{
-      favResidenciesID:{
-        set: user.favResidenciesID.filter((favId) => favId !== id),
+    const reservation = await prisma.reservation.deleteMany({
+      where: {
+        ResidencyId: id
       }
-    }
-  })
+    })
 
-  // xóa ảnh của nhà này
-    const {photos} = await prisma.residency.findFirst({
-      where:{
-        id:id
+    // cập nhật nhà yêu thích của User
+    const favResidenciesID = await prisma.favResidenciesID.deleteMany({
+      where: { ResidencyId: id },
+    });
+
+
+
+
+    // await prisma.user.update({
+    //   where: {
+    //     email: emailUser
+    //   },
+    //   data: {
+    //     favResidenciesID: {
+    //       set: user.favResidenciesID.filter((favId) => favId !== id),
+    //     }
+    //   }
+    // })
+
+    // xóa ảnh của nhà này
+    const { photos } = await prisma.residency.findFirst({
+      where: {
+        id: id
+      },
+      include: {
+        photos: true
       }
     })
 
     if (photos && photos.length) {
-    await Promise.all(photos.map((photo) => {
-      return cloudinary.uploader.destroy(photo.public_id)
-        .catch(err => {
-          console.error('Error deleting photo:', err);
-          // Xử lý hoặc ghi lại lỗi ở đây
-        });
-    }));
-  }
+      await Promise.all(photos.map((photo) => {
+        return cloudinary.uploader.destroy(photo.public_id)
+          .catch(err => {
+            console.error('Error deleting photo:', err);
+            // Xử lý hoặc ghi lại lỗi ở đây
+          });
+      }));
+    }
+
+    await prisma.photos.deleteMany({
+      where: {
+        ResidencyId: id
+      },
+
+    })
 
     const residency = await prisma.residency.delete({
-      where:{id:id}
+      where: { id: id }
     })
-    if(residency){
+
+    if (residency) {
       res.status(200).send(residency);
-    }else{
+    } else {
       res.status(404).send({ error: 'Residency not found' });
     }
   } catch (error) {
@@ -150,50 +230,57 @@ export const deleteResidency = asyncHandler(async(req,res)=>{
   }
 })
 
-export const deleteImageRes = asyncHandler(async(req,res)=>{
-  const {residencyId} = req.params
-  const {idImage}= req.body
+export const deleteImageRes = asyncHandler(async (req, res) => {
+  const { residencyId } = req.params
+  const { idImage } = req.body
 
-  console.log(residencyId,idImage)
-    try {
-        const {photos} = await prisma.residency.findFirst({
-        where:{
-          id:residencyId
-        }
-      })
+  console.log(residencyId, idImage)
+  try {
+    const { photos } = await prisma.residency.findFirst({
+      where: {
+        id: residencyId
+      },
+      include: {
+        photos: true
+      }
+    })
 
     if (photos.length <= 5) {
-        return res.status(400).send({ error: 'Cannot delete image. There must be at least 5 photos.' });
+      return res.status(400).send({ error: 'Cannot delete image. There must be at least 5 photos.' });
     }
 
-      // kiểm tra xem trong obj có obj nào trong mảng có thuộc tính id === idImage
-      if(photos.some((photo) => photo.public_id=== idImage) ){
-        await cloudinary.uploader.destroy(idImage)
-        .catch(err=>{
+    // kiểm tra xem trong obj có obj nào trong mảng có thuộc tính id === idImage
+    if (photos.some((photo) => photo.public_id === idImage)) {
+      await cloudinary.uploader.destroy(idImage)
+        .catch(err => {
           console.error('Error deleting photo:', err);
         })
-      }
-
-      const updatedPhotos = photos.filter(photo => photo.public_id !== idImage);
-      const residency = await prisma.residency.update({
-        where:{
-          id:residencyId
-        },
-        data:{
-          photos:updatedPhotos
-        }
-      })
-      if(residency){
-        res.status(200).send(residency);
-      }else{
-        res.status(404).send({ error: 'Residency not found' });
-      }
-    } catch (error) {
-      throw new Error(error.message)
     }
+
+
+    const residency = await prisma.residency.update({
+      where: {
+        id: residencyId
+      },
+      data: {
+        photos: {
+          deleteMany: {
+            public_id: idImage
+          }
+        }
+      }
+    })
+    if (residency) {
+      res.status(200).send(residency);
+    } else {
+      res.status(404).send({ error: 'Residency not found' });
+    }
+  } catch (error) {
+    throw new Error(error.message)
+  }
 })
 
-export const updateImage = asyncHandler(async (req,res) => {
+export const updateImage = asyncHandler(async (req, res) => {
   const { residencyId } = req.params;
   const { photo } = req.body;
 
@@ -203,6 +290,9 @@ export const updateImage = asyncHandler(async (req,res) => {
     const residency = await prisma.residency.findUnique({
       where: {
         id: residencyId
+      },
+      include: {
+        photos: true
       }
     });
 
@@ -228,7 +318,9 @@ export const updateImage = asyncHandler(async (req,res) => {
 
     // Thực hiện tải ảnh
     const upload = await uploadImage(photo);
-    residency.photos.push(upload);
+    const updatedPhotos = [...residency.photos, upload];
+
+    console.log(residency.photos)
 
     // Cập nhật residency
     const updatedResidency = await prisma.residency.update({
@@ -236,7 +328,9 @@ export const updateImage = asyncHandler(async (req,res) => {
         id: residencyId
       },
       data: {
-        photos: residency.photos
+        photos: {
+          create: upload
+        }
       }
     });
 
@@ -252,22 +346,22 @@ export const updateImage = asyncHandler(async (req,res) => {
   }
 });
 
-export const updateResidency  = asyncHandler(async(req,res)=>{
-  const {id} = req.params
+export const updateResidency = asyncHandler(async (req, res) => {
+  const { id } = req.params
   const data = req.body
 
   console.log(data)
 
   try {
     const residency = await prisma.residency.update({
-      where:{
-        id:id
+      where: {
+        id: id
       },
-      data:data
+      data: data
     })
-     if(residency){
+    if (residency) {
       res.status(200).send(residency);
-    }else{
+    } else {
       res.status(404).send({ error: 'Residency not found' });
     }
   } catch (error) {

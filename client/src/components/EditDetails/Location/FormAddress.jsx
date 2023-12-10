@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import FormInput from '../../FormInput/FormInput'
+
 import { IoMdClose } from "react-icons/io"
 import Map, { GeolocateControl, Marker, NavigationControl } from 'react-map-gl';
 import GeocoderControl from './geocoder-control';
@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setLocation, setMapData, setPreLocationData, setPreMapData } from '../../../store/slices/EditPropSlice';
 import useEditProp from '../../../hooks/useEditProp';
 import { useParams } from 'react-router-dom';
+import FormInput from '../../Input/FormInput/FormInput';
 
 const FormAddress = ({ toggle, setToggle }) => {
     const mapRef = useRef()

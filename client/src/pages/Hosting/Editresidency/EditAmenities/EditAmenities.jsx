@@ -110,7 +110,7 @@ const EditAmenities = () => {
                                                 removeAmentity(itemChild.title, item.key)
                                             }
                                         }}
-                                        className={`border border-[#717171] rounded-full p-2 text-[#717171] hover:text-black hover:border-black ${placeAmeneties[item.key].includes(itemChild.title) ? '' : 'bg-black text-white'}`}>
+                                        className={`border border-[#717171] rounded-full p-2 text-[#717171] hover:text-black hover:border-black ${placeAmeneties[item.key]?.includes(itemChild.title) ? '' : 'bg-black text-white'}`}>
                                         <GoX />
                                     </button>
                                     <button

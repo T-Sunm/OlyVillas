@@ -24,6 +24,12 @@ import EditResidency from "./pages/Hosting/Editresidency/EditResidency";
 import LayoutEdit from "./components/Layout/LayoutEdit";
 import EditPhotos from "./pages/Hosting/Editresidency/EditPhotos/EditPhotos";
 import EditAmenities from "./pages/Hosting/Editresidency/EditAmenities/EditAmenities";
+import AccountSetting from "./pages/Account-settings/AccountSetting";
+import PersonalInfo from "./pages/Personalinfo/PersonalInfo";
+import LoginSecurity from "./svg/Settings/LoginSecurity";
+import LoginandSecurity from "./pages/LoginSecurity/LoginandSecurity";
+import Login from "./pages/LoginSecurity/Login/Login";
+import LoginRequest from "./pages/LoginSecurity/LoginRequest/LoginRequest";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -91,6 +97,33 @@ const router = createBrowserRouter([
           {
             path: "/hosting/listings",
             element: <Listing />
+          }
+        ]
+      },
+      {
+        path: "/account-settings",
+        children: [
+          {
+            index: true,
+            element: <AccountSetting />
+          },
+          {
+            path: "/account-settings/personal-info",
+            element: <PersonalInfo />
+          },
+          {
+            path: "/account-settings/login-and-security",
+            element: <LoginandSecurity />,
+            children: [
+              {
+                index: true,
+                element: <Login />
+              },
+              {
+                path: "/account-settings/login-and-security/login-requests",
+                element: <LoginRequest />
+              }
+            ]
           }
         ]
       },

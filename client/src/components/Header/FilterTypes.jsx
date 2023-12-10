@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { iconBnbs } from '../../utils/iconBnb'
+import { iconBnbs } from '../../utils/iconBnb.jsx'
 import './FilterType.css'
 import { IoIosArrowForward, IoIosArrowBack } from 'react-icons/io'
 import useDragScroll from '../../hooks/useDraggleTabox'
@@ -46,7 +46,7 @@ const FilterTypes = () => {
               <div
                 onClick={() => setSelectedIcon(index)}
                 key={index} className={`w-[auto] flex flex-col items-center justify-between h-15 cursor-pointer p-[10px] rounded-[10px] hover:bg-[pink] ${selectedIcon === index ? "bg-[pink] " : ""}`}>
-                <img src={iconBnb.icon} alt={iconBnb.name} className='w-[30px]' />
+                {iconBnb.icon}
                 <div className={`text-[12px] font-medium break-keep whitespace-nowrap ${selectedIcon === index ? "border-b-[1px] border-[black] " : ""}`}>
                   {iconBnb.name}
                 </div>

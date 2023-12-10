@@ -8,7 +8,23 @@ const initialState ={
     placeType:undefined,
     locationData:{lng:0, lat:0},
     mapData:undefined,
-    placeSpace:{bathrooms:1, beds:1, guetsts:4,bedrooms:1},
+    placeSpace:{
+        bathrooms:{
+            quantity:1,
+            status:"Shared" 
+        } , 
+        beds:{
+            quantity:1,
+            status:"Shared" 
+        }, 
+        guetsts:{
+            quantity:4,
+        },
+        bedrooms:{
+            quantity:1,
+            status:"Shared" 
+        }
+    },
     placeAmeneties:{
         Bathroom:[], 
         BedroomandLaundry:[],

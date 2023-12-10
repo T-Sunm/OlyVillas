@@ -11,12 +11,12 @@ const NumOfGuest = () => {
     const { editProperty } = useEditProp();
     const { propertyId } = useParams()
     const handleIncrement = async () => {
-        await dispatch(setPlaceSpace({ ...placeSpace, ["guetsts"]: placeSpace["guetsts"] + 1 }))
+        await dispatch(setPlaceSpace({ ...placeSpace, ["guetsts"]: { quantity: placeSpace["guetsts"].quantity + 1 } }))
         editProperty(propertyId)
     }
 
     const handleDecrement = async (guest) => {
-        await dispatch(setPlaceSpace({ ...placeSpace, ["guetsts"]: placeSpace["guetsts"] - 1 }))
+        await dispatch(setPlaceSpace({ ...placeSpace, ["guetsts"]: { quantity: placeSpace["guetsts"].quantity - 1 } }))
         editProperty(propertyId)
     }
     return (
@@ -31,7 +31,7 @@ const NumOfGuest = () => {
                     -
                 </button>
                 <div className='p-5 w-[50px] flex justify-center items-center'>
-                    {placeSpace.guetsts}
+                    {placeSpace.guetsts.quantity}
                 </div>
                 <button
                     onClick={() => handleIncrement()}

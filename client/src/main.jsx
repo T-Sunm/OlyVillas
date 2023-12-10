@@ -7,6 +7,7 @@ import { store } from "./store/index";
 import { Auth0Provider } from '@auth0/auth0-react';
 import { QueryClientProvider } from "react-query";
 import { queryClient } from "./api/Residency";
+import Modal from "./components/Modal/Modal";
 ReactDOM.createRoot(document.getElementById("root")).render(
 
   <QueryClientProvider client={queryClient}>

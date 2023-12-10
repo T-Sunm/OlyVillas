@@ -4,6 +4,7 @@ import { GrLanguage } from 'react-icons/gr'
 import Profile from '../Profile/Profile'
 import { Link, useNavigate } from 'react-router-dom'
 const NavigationProp = () => {
+
     return (
         <>
             <div className='flex justify-between place-items-center px-[40px] h-[80px] relative'>

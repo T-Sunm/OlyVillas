@@ -56,7 +56,7 @@ const ReservationCard = ({ card, number, reservation, onActionAccept }) => {
                         {Array.isArray(card.photos) && (
                             card.photos.map(photo => (
                                 <SwiperSlide key={photo}>
-                                    <img src={photo} />
+                                    <img src={photo.url} className='h-[250px] w-[100%] object-cover rounded-lg' />
                                 </SwiperSlide>
                             ))
                         )}
@@ -73,7 +73,7 @@ const ReservationCard = ({ card, number, reservation, onActionAccept }) => {
                     className='flex justify-between'>
                     <div className='flex flex-col'>
                         <span className='break-all col-span-3 font-semibold'>Ngũ hành sơn , Vietnam</span>
-                        <span className='col-span-3 text-[#717171]'>{card.locationType} views</span>
+                        <span className='col-span-3 text-[#717171]'>{card.locationType.name} views</span>
                         {revervationDate && (
                             <span className='col-span-3 text-[#717171]'>{revervationDate}</span>
                         )}

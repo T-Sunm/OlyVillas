@@ -74,7 +74,7 @@ const Listing = () => {
             listingTitle: res.title,
             baths: res.placeSpace.bathrooms,
             beds: res.placeSpace.beds,
-            locationCity: res.mapData?.city,
+            locationCity: res.mapData?.region ? res.mapData?.region : res.mapData?.place,
             locationCountry: res.mapData?.country,
             lastmodified: format(new Date(res.updatedAt), "MMM d")
 

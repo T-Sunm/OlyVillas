@@ -6,13 +6,25 @@ const FloorPlan = () => {
     const placeSpace = useSelector((state) => state.CreateProcess.placeSpace)
     const dispatch = useDispatch()
     const handleIncrement = (type) => {
-        // ngoặc vuông dùng để truy cập property của Obj
-        dispatch(setPlaceSpace({ ...placeSpace, [type]: placeSpace[type] + 1 }))
-    }
+        const incrementValue = type === 'bathrooms' ? 0.5 : 1;
+        dispatch(setPlaceSpace({
+            ...placeSpace,
+            [type]: {
+                ...placeSpace[type],
+                quantity: placeSpace[type].quantity + incrementValue
+            }
+        }));
+    };
     const handleDecrement = (type) => {
-        // ngoặc vuông dùng để truy cập property của Obj
-        dispatch(setPlaceSpace({ ...placeSpace, [type]: placeSpace[type] - 1 }))
-    }
+        const decrementValue = type === 'bathrooms' ? 0.5 : 1;
+        dispatch(setPlaceSpace({
+            ...placeSpace,
+            [type]: {
+                ...placeSpace[type],
+                quantity: placeSpace[type].quantity - decrementValue
+            }
+        }));
+    };
     return (
         <div className='flex flex-col justify-center items-center gap-5 w-full h-[70vh] '>
             <div className='flex flex-col gap-3'>
@@ -32,7 +44,7 @@ const FloorPlan = () => {
                                 -
                             </button>
                             <div className='p-5 w-[50px] flex justify-center items-center'>
-                                {placeSpace[place]}
+                                {placeSpace[place].quantity}
                             </div>
                             <button
                                 onClick={() => handleIncrement(place)}

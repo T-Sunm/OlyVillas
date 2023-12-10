@@ -6,24 +6,41 @@ import { useNavigate, useNavigation, useRoutes } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import PropertyCardmain from '../../components/PropertyCard/PropertyCardmain'
 import Navigation from '../../components/Header/Navigation'
+import { queryClient } from '../../api/Residency'
+import { createRating } from '../../api/Rating'
 
 const Reservations = () => {
 
     const { user } = useSelector((state) => state.auth.userInfo)
-    const queryClient = useQueryClient();
 
     const params = {
         userId: user.id
     };
 
-    const { data: dataReservation, isLoadingReservation, isError: ReservationError } = useQuery(["reservations", user.id], () => getReservation(params))
+    const { data: dataReservation, isLoadingReservation, isError: ReservationError } = useQuery({
+        queryKey: ["reservations", user.id],
+        queryFn: () => getReservation(params),
+        refetchOnWindowFocus: false
+    })
+
+    console.log(dataReservation)
+
     const { mutate: mutateCancelReservation } = useMutation({
         mutationFn: (id) => deleteReservation(id),
         onError: ({ response }) => toast.error(response.data.message, { position: "bottom-right" }),
         onSuccess: () => {
             toast.success('Reservation cancelled')
-            queryClient.invalidateQueries(["reservations", user.id])
+            queryClient.invalidateQueries({ queryKey: ["reservations", user.id] })
+            window.location.reload();
+        }
+    })
 
+    const { mutate: mutateRating } = useMutation({
+        mutationFn: (data) => createRating(data),
+        onError: ({ response }) => toast.error(response.data.message, { position: "bottom-right" }),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["reservations"] })
+            window.location.reload();
         }
     })
 
@@ -65,6 +82,7 @@ const Reservations = () => {
                                     number={i}
                                     reservation={card}
                                     onAction={mutateCancelReservation}
+                                    onAction2={mutateRating}
                                 />
                             ))
                         }

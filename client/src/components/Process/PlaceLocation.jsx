@@ -42,7 +42,6 @@ const PlaceLocation = () => {
                     }}
                     mapStyle="mapbox://styles/mapbox/streets-v11"
                     mapboxAccessToken={mapboxToken}
-
                 >
 
                     <Marker
@@ -57,7 +56,6 @@ const PlaceLocation = () => {
                         onGeolocate={(e) => dispatch(setLocation({ lng: e.coords.longitude, lat: e.coords.latitude }))}
                     />
                     <GeocoderControl />
-
                 </Map>
             </div>
         </div>

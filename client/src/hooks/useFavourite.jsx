@@ -20,6 +20,7 @@ const useFavourite = (ResidencyId, currentUser) => {
     const { mutate } = useMutation({
         mutationFn: (id) => FavouritesResidency(id, currentUser.email),
         onSuccess: () => {
+            // cập nhật lên localStorage
             dispatch(setFavResidenciesID(ResidencyId)),
                 queryClient.invalidateQueries(["allProperties"]);
             toast.success('Success');

@@ -24,10 +24,11 @@ export const sliderSettings = {
 
 };
 
-export const updateFavourites =(id,favResidenciesID)=>{
-  if(favResidenciesID.includes(id)){
-    return favResidenciesID.filter((resID)=> resID != id)
-  }else{
-    return [...favResidenciesID,id]
+
+export const updateFavourites = (id, favResidenciesID) => {
+  if (favResidenciesID.includes(id)) {
+    return favResidenciesID.filter((resID) => resID != id)
+  } else {
+    return [...favResidenciesID, id]
   }
 }

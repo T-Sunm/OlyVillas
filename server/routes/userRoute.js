@@ -1,9 +1,10 @@
 import express from "express";
 import {
-  bookVisit,
   createUser,
+  editUserEmail,
+  editUserInfo,
+  editUserPassword,
   getAllFavorites,
-  getAllVisit,
   login,
   toFav,
   verifyEmail,
@@ -13,10 +14,11 @@ const router = express.Router();
 
 router.post("/register", createUser);
 router.post("/verifyEmail", verifyEmail);
-router.post("/login",login)
-router.post("/bookVisit/:id", bookVisit);
-router.post("/getAllVisit", getAllVisit);
+router.post("/login", login)
+router.post("/editUserInfo", editUserInfo)
+router.post("/editEmail", editUserEmail)
 router.post("/toFav/:id", toFav);
 router.post("/getAllFav", getAllFavorites);
+router.post('/editPassword', editUserPassword)
 
 export { router as userRoute };

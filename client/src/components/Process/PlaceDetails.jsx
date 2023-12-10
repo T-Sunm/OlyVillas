@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setMapData } from '../../store/slices/ProcessSlice'
-import FormInput from '../FormInput/FormInput'
+import FormInput from '../Input/FormInput/FormInput'
+
 
 const PlaceDetails = () => {
     const mapData = useSelector((state) => state.CreateProcess.mapData)

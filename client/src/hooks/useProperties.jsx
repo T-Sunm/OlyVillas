@@ -2,7 +2,7 @@ import React from 'react'
 import { useQuery } from 'react-query'
 import { getAllProperties } from '../utils/api'
 
-const useProperties = () => {
+const useProperties = (params) => {
     const { data, isLoading, isError, refetch } = useQuery({
         queryKey: ['allProperties'],
         queryFn: getAllProperties,

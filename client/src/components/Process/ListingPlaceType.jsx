@@ -9,20 +9,26 @@ const ListingPlaceType = () => {
     const dispatch = useDispatch()
     const data = [
         {
+            id: 1,
             title: "An entire place",
             subTitle: "Guests have the whole place to themselves.",
             svg: <House />,
+            data: "Entire"
         },
         {
+            id: 2,
             title: "A room",
             subTitle: "Guests have their own room in a home, plus access to shared spaces.",
             svg: <Room />,
+            data: "Private room"
         },
 
         {
+            id: 3,
             title: "A shared room",
             subTitle: "Guests sleep in a room or common area that may be shared with you or others.",
             svg: <SharedRoom />,
+            data: "Room"
         }
 
     ]
@@ -34,20 +40,20 @@ const ListingPlaceType = () => {
             <div className='flex flex-col h-[70%] w-[800px] justify-center gap-5'>
                 {data.map((type, i) => (
                     <div
-                        onClick={() => dispatch(setPlaceType(type.title))}
+                        onClick={() => dispatch(setPlaceType({ id: type.id, type: type.data }))}
                         key={type.title} className={`flex border 
                         border-gray-300 rounded-md p-7
                         hover:border-gray-950
                         justify-between
                         transition-all
                         duration-300
-                        ${placeType === type.title ? 'border-gray-950 bg-slate-100' : ''}
+                        ${placeType?.id === type?.id ? 'border-gray-950 bg-slate-100' : ''}
                     `} >
                         <div>
-                            <h4 className='font-semibold'>{type.title}</h4>
-                            <p>{type.subTitle}</p>
+                            <h4 className='font-semibold'>{type?.title}</h4>
+                            <p>{type?.subTitle}</p>
                         </div>
-                        {type.svg}
+                        {type?.svg}
                     </div>
                 ))}
             </div>

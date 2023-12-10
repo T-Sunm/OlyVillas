@@ -14,16 +14,16 @@ const ListingTypeSelector = () => {
                     <div className='grid grid-cols-3 gap-5 '>
                         {iconBnbs.map((icon, i) => (
                             <button
-                                onClick={() => dispatch(setLocationType(icon.name))}
+                                onClick={() => dispatch(setLocationType({ parentId: icon.parentId, name: icon.name }))}
                                 key={icon.name} className={`flex flex-col 
                         font-semibold border
                         border-gray-300 rounded-md p-3
                         hover:border-gray-950
                         transition-all
                         duration-300
-                        ${locationType === icon.name ? 'border-gray-950 bg-slate-100' : ''}
+                        ${icon?.name === locationType?.name ? 'border-gray-950 bg-slate-100' : ''}
                     `}>
-                                <img className='w-[45px]' src={icon.icon} />
+                                {icon.icon}
                                 <span>{icon.name}</span>
                             </button>
                         ))}

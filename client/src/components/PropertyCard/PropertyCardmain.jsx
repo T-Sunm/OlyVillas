@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { AiFillStar } from 'react-icons/ai'
 import { Pagination, Navigation } from 'swiper/modules'
@@ -13,14 +13,39 @@ import 'swiper/css/navigation';
 import { Link, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import HeartButton from '../HeartButton/HeartButton';
-const PropertyCardmain = ({ card, number, reservation, onAction }) => {
+import Rating from '../Rating/Rating';
+import Rating2 from '../Rating/Rating2';
+import { FaStar } from 'react-icons/fa';
+const PropertyCardmain = ({ card, number, reservation, onAction, onAction2 }) => {
+
+    const [rating, setRating] = useState(null)
 
     const { userInfo, authenticated } = useSelector((state) => state.auth)
+
+    const starts = useMemo(() => {
+        if (card?.Rating?.length === 0) {
+            return 0; // Trả về 0 nếu không có đánh giá nào
+        }
+        const totalStars = card?.Rating?.reduce((acc, obj) => acc + obj.stars, 0);
+        return (totalStars / card?.Rating?.length).toFixed(1);
+    }, [card])
 
     const handleCancel = useCallback((e) => {
         e.stopPropagation();
         onAction(reservation.id)
     }, [onAction])
+    console.log(userInfo)
+
+    const handleRating = useCallback((e, rating) => {
+        const data = {
+            userId: userInfo.user.id,
+            ResidencyId: card.id,
+            ReservationId: reservation.id,
+            stars: rating,
+        }
+        e.stopPropagation();
+        onAction2(data)
+    }, [onAction2])
 
     const revervationDate = useMemo(() => {
         if (!reservation) {
@@ -78,8 +103,8 @@ const PropertyCardmain = ({ card, number, reservation, onAction }) => {
                     <div
                         className='flex justify-between'>
                         <div className='flex flex-col'>
-                            <span className='break-all col-span-3 font-semibold'>Ngũ hành sơn , Vietnam</span>
-                            <span className='col-span-3 text-[#717171]'>{card.locationType} views</span>
+                            <span className='break-all col-span-3 font-semibold'>{card.mapData?.region ? card?.mapData?.region + ", " + card?.mapData?.country : card?.mapData?.place + ", " + card?.mapData?.country}</span>
+                            <span className='col-span-3 text-[#717171]'>{card.locationType?.name} views</span>
                             {revervationDate && (
                                 <span className='col-span-3 text-[#717171]'>{revervationDate}</span>
                             )}
@@ -88,14 +113,25 @@ const PropertyCardmain = ({ card, number, reservation, onAction }) => {
                                 <span className='font-semibold'>{price}$</span> night
                             </span>
                         </div>
-                        <span className='flex'>{card.star} <AiFillStar /></span>
+                        {!reservation && (
+                            <div className='flex justify-start items-start  gap-2'>
+                                {starts}
+                                <FaStar className='mt-[0.7px]' />
+                            </div>
+                        )}
                     </div>
                 </Link>
 
-                {reservation && (
+                {reservation && reservation?.Status !== "Success" && (
                     <button onClick={handleCancel} className='bg-airbnb-theme-color text-white py-1 flex justify-center rounded-[10px]'>
                         Cancel Reservation
                     </button>
+                )}
+                {reservation && reservation.Rating.length === 0 && reservation?.Status === "Success" && (
+                    <Rating2 rating={rating} setRating={setRating} onRating={handleRating} />
+                )}
+                {reservation && reservation.Rating.length === 1 && reservation?.Status === "Success" && (
+                    <Rating stars={reservation.Rating[0].stars} />
                 )}
             </div>
         </div>

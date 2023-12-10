@@ -1,0 +1,171 @@
+.container-search {
+    width: 100%;
+    border-radius: 12px;
+    height: 50vh;
+}
+
+.guest {
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.dateRangeSearch {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.dateRangeSearch .rdrDateDisplayWrapper {
+    display: none;
+}
+
+.dateRangeSearch .rdrMonths .rdrMonthsHorizontal {
+    width: 100% !important;
+
+}
+
+.dateRangeSearch .rdrMonth {
+    width: 50% !important;
+    height: 100% !important;
+}
+
+/* custom dayRange */
+.dateRangeSearch .rdrDay {
+    background: transparent;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    border: 0;
+    padding: 0;
+    line-height: 3.000em;
+    height: 4.000em !important;
+    text-align: center;
+    color: #1d2429;
+}
+
+.dateRangeSearch .rdrDayDisabled {
+    background-color: white !important;
+
+}
+
+.dateRangeSearch .rdrDayDisabled .rdrDayNumber {
+    color: #CFCFCF;
+    text-decoration: line-through !important;
+}
+
+.dateRangeSearch .rdrDay .rdrInRange {
+    border-radius: 100%;
+    color: #F7F7F7 !important;
+}
+
+.rdrDay:not(.rdrDayPassive) .rdrInRange~.rdrDayNumber span,
+.rdrDay:not(.rdrDayPassive) .rdrSelected~.rdrDayNumber span {
+    color: black;
+}
+
+
+
+.dateRangeSearch .rdrDay .rdrStartEdge {
+    left: 1px;
+    right: 1px;
+    border-radius: 100%;
+    color: black !important;
+    top: 3px;
+    bottom: 3px;
+}
+
+.dateRangeSearch .rdrDay .rdrEndEdge {
+    left: 1px;
+    right: 1px;
+    border-radius: 100%;
+    color: black !important;
+    top: 3px;
+    bottom: 3px;
+}
+
+/* custom viền preview */
+.rdrDayStartOfMonth .rdrDayInPreview,
+.rdrDayStartOfMonth .rdrDayEndPreview,
+.rdrDayStartOfWeek .rdrDayInPreview,
+.rdrDayStartOfWeek .rdrDayEndPreview {
+    border-top-left-radius: 2em;
+    border-bottom-left-radius: 2em;
+    border-left: 1px solid black;
+    left: 0px;
+}
+
+.rdrDayEndOfMonth .rdrDayInPreview,
+.rdrDayEndOfMonth .rdrDayEndPreview,
+.rdrDayEndOfWeek .rdrDayInPreview,
+.rdrDayEndtOfWeek .rdrDayEndPreview {
+    border-top-right-radius: 2em;
+    border-bottom-right-radius: 2em;
+    border-right: 1px solid black;
+    left: 0px;
+}
+
+.rdrDayWeekend .rdrDayEndOfWeek .rdrDayInPreview {
+    background: rgba(255, 255, 255, 0.09);
+    position: absolute;
+    top: 3px;
+    left: 0px;
+    right: 0px;
+    bottom: 3px;
+    pointer-events: none;
+    border-right: 1px solid black !important;
+    z-index: 1;
+}
+
+.rdrDayStartPreview,
+.rdrDayEndPreview {
+    background: rgba(255, 255, 255, 0.09);
+    position: absolute;
+    top: 3px;
+    left: 0px;
+    right: 0px;
+    bottom: 3px;
+    pointer-events: none;
+    border: 0px solid black;
+    z-index: 1;
+}
+
+.rdrDayInPreview {
+    background: rgba(255, 255, 255, 0.09);
+    position: absolute;
+    top: 3px;
+    left: 0px;
+    right: 0px;
+    bottom: 3px;
+    pointer-events: none;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    z-index: 1;
+}
+
+
+
+.dateRangeSearch .rdrDayEndPreview {
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-top-right-radius: 2em;
+    border-bottom-right-radius: 2em;
+    right: 0
+}
+
+.dateRangeSearch .rdrDayStartPreview {
+    border-top-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;
+    border-top-left-radius: 2em;
+    border-bottom-left-radius: 2em;
+    left: 1
+}
+
+.rdrDayEndOfMonth .rdrDayInPreview,
+.rdrDayEndOfMonth .rdrDayStartPreview,
+.rdrDayEndOfWeek .rdrDayInPreview,
+.rdrDayEndOfWeek .rdrDayStartPreview {
+    border-top-right-radius: 2em;
+    border-bottom-right-radius: 2em;
+    border-right-width: 1px;
+    right: 0px;
+}

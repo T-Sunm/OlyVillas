@@ -20,7 +20,6 @@ const ListingDes = () => {
     const handleSave = async () => {
         await dispatch(setDescription(localDescription));
         editProperty(propertyId)
-
     };
 
     const handleClose = () => {

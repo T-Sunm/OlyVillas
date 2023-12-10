@@ -100,6 +100,12 @@ const TripScheduler = ({ price, mutate, dataReservation }) => {
 
     const handleReverse = () => {
         mutate()
+        setDayCount(0)
+        setDate({
+            startDate: new Date(),
+            endDate: new Date(),
+            key: 'selection'
+        })
     }
     return (
         <div className='sticky z-10 top-10'>

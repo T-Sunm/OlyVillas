@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useMutation, useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
 import { createReservation, getProperty, getReservation } from '../../utils/api'
@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setEndDate, setPrice, setResidencyId, setStartDate, setTripInfo } from '../../store/slices/Reservation'
 import { toast } from 'react-toastify'
 import useProperty from '../../hooks/useProperty'
+import Rating2 from '../../components/Rating/Rating2'
+import Rating from '../../components/Rating/Rating'
 
 const Property = () => {
 
@@ -45,6 +47,14 @@ const Property = () => {
 
     })
 
+    const starts = useMemo(() => {
+        if (data?.Rating?.length === 0) {
+            return 0; // Trả về 0 nếu không có đánh giá nào
+        }
+        const totalStars = data?.Rating?.reduce((acc, obj) => acc + obj.stars, 0);
+        return (totalStars / data?.Rating?.length).toFixed(1);
+    }, [data])
+
     console.log(data)
 
     if (isLoading) {
@@ -73,26 +83,36 @@ const Property = () => {
                     <div className='px-20 pt-10 text-airbnb-light-black  gap-10'
                     >
                         <div className='flex flex-col gap-5'>
-                            <div className='flex flex-col gap-1 '>
+                            <div className='flex gap-1 '>
                                 <h2 className='text-5xl'>{data.title}</h2>
-                                <span className='text-lg cursor-pointer underline'>{data.mapData.locality} , {data.mapData.country}</span>
+
                             </div>
                             <ListingPhotos photos={data.photos} />
                             <div className='flex' >
                                 <div className='flex flex-col gap-3 w-[58.333333333333336%]'>
-                                    <h3 className='text-2xl font-semibold'>
-                                        {data?.locationType} hosted by{" "}
+                                    <div className='flex justify-between'>
+                                        <h3 className='text-2xl font-semibold'>
+                                            {data?.placeType.type}{""} {data.locationType.name} {" in"} {data?.mapData?.locality + ", " + data?.mapData?.place + ", " + data?.mapData?.region + ", " + data?.mapData?.country}
+                                            {/* hosted by{" "}
                                         {data?.owner?.firstName}{" "}
-                                        {data?.owner?.lastName}{" "}
-                                    </h3>
+                                        {data?.owner?.lastName}{" "} */}
+                                        </h3>
+                                        <div className='flex items-center gap-2'>
+                                            <Rating stars={starts} />
+                                            <span className='text-[20px] font-semibold'>{starts}</span>
+                                        </div>
+
+                                    </div>
                                     <ul className='flex gap-5'>
                                         {Object.keys(data.placeSpace).map(TypeSpace => (
                                             <li key={TypeSpace} className='border border-gray-300 p-3 rounded-lg flex flex-col justify-start items-start w-32'>
-                                                <span className='text-2xl font-semibold'>{data.placeSpace[TypeSpace]}</span>
-                                                <span className='capitalize'>{TypeSpace}</span>
+                                                <span className='text-2xl font-semibold'>{data.placeSpace[TypeSpace].quantity}</span>
+                                                <span className='capitalize'>{data.placeSpace[TypeSpace].status} {TypeSpace}</span>
                                             </li>
                                         ))}
                                     </ul>
+
+
                                     <p>{data.description}</p>
                                     <ListingAmenties amenties={data.placeAmeneties} />
                                     <LisingMap mapLocation={data?.locationData} mapData={data?.mapData} />

@@ -10,40 +10,44 @@ generator client {
 model User {
   // @id: Đánh dấu đây là khóa chính 
   // @default(auto()): Giá trị mặc định của trường id là tự động generate
-  id               String        @id @default(auto()) @map("_id") @db.ObjectId
+  id               String             @id @default(auto()) @map("_id") @db.ObjectId
   // ? nghĩa là có thể null
   firstName        String?
   lastName         String?
-  email            String        @unique
+  email            String             @unique
   password         String
   image            String?
   bookedVisits     Json[]
-  favResidenciesID String[]      @db.ObjectId
   // dùng @relation("Owner") @relation("Owner") 
-  ownedResidencies Residency[]   @relation("Owner")
+  ownedResidencies Residency[]        @relation("Owner")
   Reservations     Reservation[]
+  Rating           Rating[]
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  favResidenciesID favResidenciesID[]
 }
 
 model Residency {
-  id             String        @id @default(auto()) @map("_id") @db.ObjectId
-  title          String
-  price          Int
-  userEmail      String
-  locationType   String
-  placeType      String
-  mapData        Json
-  locationData   Json
-  placeSpace     Json
-  placeAmeneties Json
-  photos         Json
-  description    String
-  star           Float?
-  // owner là khóa ngoại 
-  owner          User          @relation("Owner", fields: [userEmail], references: [email])
-  Reservations   Reservation[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id               String             @id @default(auto()) @map("_id") @db.ObjectId
+  title            String
+  price            Int
+  userEmail        String
+  locationType     Json
+  placeType        Json
+  mapData          Json
+  locationData     Json
+  placeSpace       Json
+  placeAmeneties   Json
+  description      String
+  star             Float?
+  // owner là khóa ngoại  
+  owner            User               @relation("Owner", fields: [userEmail], references: [email])
+  Reservations     Reservation[]
+  Rating           Rating[]
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  photos           photos[]
+  favResidenciesID favResidenciesID[]
 }
 
 model Reservation {
@@ -60,4 +64,36 @@ model Reservation {
 
   userTrip  User      @relation(fields: [userId], references: [id])
   Residency Residency @relation(fields: [ResidencyId], references: [id])
+  Rating    Rating[]
+}
+
+model Rating {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  ResidencyId   String   @db.ObjectId
+  userId        String   @db.ObjectId
+  ReservationId String   @db.ObjectId
+  stars         Float
+  comment       String? // Tùy chọn
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  Residency   Residency   @relation(fields: [ResidencyId], references: [id])
+  User        User        @relation(fields: [userId], references: [id])
+  Reservation Reservation @relation(fields: [ReservationId], references: [id])
+}
+
+model photos {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  ResidencyId String    @db.ObjectId
+  public_id   String
+  url         String
+  Residency   Residency @relation(fields: [ResidencyId], references: [id])
+}
+
+model favResidenciesID {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  ResidencyId String    @db.ObjectId
+  userId      String    @db.ObjectId
+  Residency   Residency @relation(fields: [ResidencyId], references: [id])
+  User        User      @relation(fields: [userId], references: [id])
 }
