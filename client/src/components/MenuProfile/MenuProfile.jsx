@@ -8,8 +8,8 @@ import { Link, redirect, useNavigate } from 'react-router-dom';
 const MenuProfile = ({ isOpen, setToggle }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const isAuthenticated = useSelector((state) => state.auth.authenticated)
-  console.log(isAuthenticated)
+  const userInfo = useSelector((state) => state.auth.userInfo)
+
   const menuProItemsAuthenticated = [
     {
       title: "Whishlists",
@@ -30,6 +30,7 @@ const MenuProfile = ({ isOpen, setToggle }) => {
     },
     {
       title: "Manage Listings",
+      Link: "/hosting",
       callBack: () => {
         setToggle(false)
         dispatch(setAuthModalFalse())
@@ -102,10 +103,10 @@ const MenuProfile = ({ isOpen, setToggle }) => {
       {isOpen === true ? (
         <div className={`MenuProfile absolute right-4  w-auto h-auto rounded-[12px] py-[8px] mt-[34px] z-[11] bg-white text-black `}>
           <OutsideClickHandler onOutsideClick={() => setToggle(false)}>
-            {isAuthenticated ? (
+            {userInfo ? (
               <ul>
                 {menuProItemsAuthenticated.map((menuProItem, index) => (
-                  index !== 2 ? (
+                  index !== 3 ? (
                     <li className={`py-[12px] px-[16px] w-[240px] ${menuProItem.font}`}>
                       <Link
                         to={menuProItem?.Link}

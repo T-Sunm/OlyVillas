@@ -8,24 +8,25 @@ import ReservationCard from '../../components/PropertyCard/ReservationCard';
 import { toast } from 'react-toastify';
 import { differenceInDays, parseISO } from 'date-fns';
 import Navigation from '../../components/Header/Navigation';
+import Headerhosting from '../../components/Header/Headerhosting';
 const Hosting = () => {
 
     const [statusReversation, setStatusReversation] = useState('Pending')
 
-    const { user } = useSelector((state) => state.auth.userInfo)
+    const { user } = useSelector((state) => state?.auth?.userInfo)
 
     const params = {
-        authorEmail: user.email
+        authorEmail: user?.email
     };
 
-    const { data: dataReservation, isLoadingReservation, isError: ReservationError } = useQuery(["hosting", user.email], () => getReservation(params))
+    const { data: dataReservation, isLoadingReservation, isError: ReservationError } = useQuery(["hosting", user?.email], () => getReservation(params))
 
     const { mutate: mutateAcceptReservation } = useMutation({
         mutationFn: (id) => updateReservation(id),
-        onError: ({ response }) => toast.error(response.data.message, { position: "bottom-right" }),
+        onError: ({ response }) => toast.error(response?.data?.message, { position: "bottom-right" }),
         onSettled: () => {
             toast.success('Reservation Accept success')
-            queryClient.invalidateQueries(["hosting", user.email])
+            queryClient.invalidateQueries(["hosting", user?.email])
         }
     })
 
@@ -77,7 +78,7 @@ const Hosting = () => {
 
     return (
         <>
-            <Navigation />
+            <Headerhosting />
             <div className='flex flex-col gap-2 px-[80px] pt-[64px]'>
                 <h2 className='text-3xl font-medium'>
                     Welcome back,Minh

@@ -16,13 +16,13 @@ const PlaceDetails = () => {
     return (
         <div className='flex flex-col justify-center items-center gap-2 w-full h-[70vh]'>
             <div className='flex flex-col gap-3'>
-                <h2 className='font-semibold text-4xl'>Confirm your address</h2>
-                <p>Your address is only shared with guests after they've made
+                <h2 className='font-semibold laptop:text-[32px] phone:text-[26px]'>Confirm your address</h2>
+                <p className='text-[#717171]'>Your address is only shared with guests after they've made
                     a reservation
                 </p>
             </div>
             <div className='flex flex-col gap-3 w-full h-full overflow-auto no-scrollbar pb-20 pt-5  items-center'>
-                <div className={`w-[30%]  ${item === "country" ? '' : 'border border-t-[#b0b0b0] border-x-[#b0b0b0] rounded-lg'}`}>
+                <div className={`laptop:w-[30%] tablet:w-[50%]     ${item === "country" ? '' : 'border border-t-[#b0b0b0] border-x-[#b0b0b0] rounded-lg'}`}>
                     <FormInput
                         isListing
                         name="country"
@@ -34,7 +34,7 @@ const PlaceDetails = () => {
                         setItem={setItem}
                     />
                 </div>
-                <div className={`flex flex-col w-[30%]  border border-t-[#b0b0b0] border-x-[#b0b0b0]  rounded-lg overflow-hidden`}>
+                <div className={`flex flex-col laptop:w-[30%] tablet:w-[50%]  border border-t-[#b0b0b0] border-x-[#b0b0b0]  rounded-lg overflow-hidden`}>
                     <FormInput
                         isListing
                         title="Street address"

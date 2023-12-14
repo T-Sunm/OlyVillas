@@ -26,14 +26,14 @@ const FloorPlan = () => {
         }));
     };
     return (
-        <div className='flex flex-col justify-center items-center gap-5 w-full h-[70vh] '>
+        <div className='flex flex-col justify-center items-center gap-5 w-full h-[70vh] phone:px-3 '>
             <div className='flex flex-col gap-3'>
-                <h2 className='font-semibold text-4xl'>Share some basics about your place</h2>
-                <p>
+                <h2 className='font-semibold laptop:text-[32px] phone:text-[26px]'>Share some basics about your place</h2>
+                <p className='text-[#717171]'>
                     You'll add more details later ,such as bed types
                 </p>
             </div>
-            <div className='flex flex-col w-[40%] gap-5'>
+            <div className='flex flex-col tablet:w-[60%] laptop:w-[40%] gap-5 phone:w-full'>
                 {Object.keys(placeSpace).map((place, i) => (
                     <div key={i} className='flex justify-between w-full text-lg items-center'>
                         <span className='capitalize'>{place}</span>

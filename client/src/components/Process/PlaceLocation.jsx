@@ -24,39 +24,41 @@ const PlaceLocation = () => {
         }
     }, [])
     return (
-        <div className='flex flex-col items-center justify-center gap-5 h-[70vh]'>
-            <h2 className='font-semibold text-4xl'>
-                Which of these best describes your place
-            </h2>
-            <p>
-                Your address is only shared with guests after they've
-                made a reservation
-            </p>
-            <div className='h-[400px] w-[700px]'>
-                <Map
-                    ref={mapRef}
-                    initialViewState={{
-                        longitude: lng,
-                        latitude: lat,
-                        zoom: 10
-                    }}
-                    mapStyle="mapbox://styles/mapbox/streets-v11"
-                    mapboxAccessToken={mapboxToken}
-                >
+        <div className=' h-[70vh] phone:px-[20px] phone:gap-4 desktop:gap-10'>
+            <div className='h-[100%] overflow-auto gap-3 flex flex-col items-center justify-center'>
+                <h2 className='font-semibold laptop:text-[32px] phone:text-[26px] '>
+                    Which of these best describes your place
+                </h2>
+                <p className='text-[#717171]'>
+                    Your address is only shared with guests after they've
+                    made a reservation
+                </p>
+                <div className='h-[400px] w-[100%]'>
+                    <Map
+                        ref={mapRef}
+                        initialViewState={{
+                            longitude: lng,
+                            latitude: lat,
+                            zoom: 10
+                        }}
+                        mapStyle="mapbox://styles/mapbox/streets-v11"
+                        mapboxAccessToken={mapboxToken}
+                    >
 
-                    <Marker
-                        longitude={lng}
-                        latitude={lat}
-                        draggable
-                        onDragEnd={(e) => dispatch(setLocation({ lng: e.lngLat.lng, lat: e.lngLat.lat }))}
-                    />
-                    <NavigationControl position='bottom-right' />
-                    <GeolocateControl position='top-left'
-                        trackUserLocation
-                        onGeolocate={(e) => dispatch(setLocation({ lng: e.coords.longitude, lat: e.coords.latitude }))}
-                    />
-                    <GeocoderControl />
-                </Map>
+                        <Marker
+                            longitude={lng}
+                            latitude={lat}
+                            draggable
+                            onDragEnd={(e) => dispatch(setLocation({ lng: e.lngLat.lng, lat: e.lngLat.lat }))}
+                        />
+                        <NavigationControl position='bottom-right' />
+                        <GeolocateControl position='top-left'
+                            trackUserLocation
+                            onGeolocate={(e) => dispatch(setLocation({ lng: e.coords.longitude, lat: e.coords.latitude }))}
+                        />
+                        <GeocoderControl />
+                    </Map>
+                </div>
             </div>
         </div>
     )

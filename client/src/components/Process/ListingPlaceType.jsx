@@ -33,29 +33,34 @@ const ListingPlaceType = () => {
 
     ]
     return (
-        <div className='flex flex-col h-[70vh] items-center justify-center'>
-            <div className='font-semibold text-4xl'>
-                Which of these best describes your place?
-            </div>
-            <div className='flex flex-col h-[70%] w-[800px] justify-center gap-5'>
-                {data.map((type, i) => (
-                    <div
-                        onClick={() => dispatch(setPlaceType({ id: type.id, type: type.data }))}
-                        key={type.title} className={`flex border 
+        <div className=' h-[70vh]   phone:px-[20px] phone:gap-4 desktop:gap-10'>
+            <div className='h-[100%] overflow-auto gap-3 flex flex-col items-center justify-center'>
+                <div className='font-semibold laptop:text-[32px] phone:text-[26px] '>
+                    <span> What type of place will guests have?</span>
+                </div>
+                <div className='flex flex-col justify-center gap-5'>
+                    {data.map((type, i) => (
+                        <div
+                            onClick={() => dispatch(setPlaceType({ id: type.id, type: type.data }))}
+                            key={type.title} className={`flex border 
                         border-gray-300 rounded-md p-7
                         hover:border-gray-950
                         justify-between
                         transition-all
+                        items-center
                         duration-300
                         ${placeType?.id === type?.id ? 'border-gray-950 bg-slate-100' : ''}
                     `} >
-                        <div>
-                            <h4 className='font-semibold'>{type?.title}</h4>
-                            <p>{type?.subTitle}</p>
+                            <div>
+                                <h4 className='font-semibold'>{type?.title}</h4>
+                                <p className='text-[14px] text-[#717171]'>{type?.subTitle}</p>
+                            </div>
+                            <div>
+                                {type?.svg}
+                            </div>
                         </div>
-                        {type?.svg}
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
         </div>
     )

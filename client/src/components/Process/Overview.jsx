@@ -21,25 +21,27 @@ const Overview = () => {
     ]
 
     return (
-        <div className='h-[90%] px-32'>
-            <div className='flex items-center justify-between gap-20'>
+        <div className='desktop:h-[90%] px-32 phone:px-3'>
+            <div className='flex desktop:flex-row laptop:flex-row tablet:flex-row phone:flex-col items-center justify-between gap-20 phone:gap-5'>
                 <div>
-                    <span className='text-5xl text-airbnb-light-black font-semibold'>
+                    <span className='tablet:text-5xl text-airbnb-light-black font-semibold phone:font-medium phone:text-[36px]'>
                         {mainTitle}
                     </span>
                 </div>
-                <div className='flex flex-col gap-16'>
+                <div className='flex flex-col gap-16 '>
                     {data.map((step, i) => (
-                        <div key={i} className='flex items-center justify-start gap-6'>
-                            <div className='text-2xl pt-5 '>
+                        <div key={i} className='flex items-center justify-start gap-6 phone:items-start'>
+                            <div className='desktop:text-2xl laptop:text-2xl tablet:text-2xl
+                            pt-5 
+                            phone:text-[18px]'>
                                 {i + 1}
                             </div>
-                            <div className='flex items-center justify-center gap-6'>
+                            <div className='flex items-center justify-center gap-6 phone:justify-start phone:items-start'>
                                 <div className='flex flex-col pt-5'>
-                                    <span className='text-2xl font-semibold'>
+                                    <span className='tablet:text-2xl tablet:font-semibold phone:text-[18px] phone:font-medium'>
                                         {step.title}
                                     </span>
-                                    <span className='text-airbnb-light-gray'>
+                                    <span className='text-airbnb-light-gray phone:text-[14px] tablet:text-[16px]'>
                                         {step.description}
                                     </span>
                                 </div>

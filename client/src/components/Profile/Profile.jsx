@@ -6,7 +6,7 @@ import './profile.css'
 import { useSelector } from 'react-redux'
 import MenuProfile from '../MenuProfile/MenuProfile'
 
-const Profile = () => {
+const Profile = ({ toggleHamber = true }) => {
   const userInfo = useSelector((state) => state.auth.userInfo)
   const [toggle, setToggle] = useState(false)
 
@@ -27,13 +27,15 @@ const Profile = () => {
       <div
         onClick={(e) => handleMenuToggle(e)}
         className='profile 
-    h-[48px] rounded-[30px] flex items-center border-[1px] border-[#c6c5c5] py-[8px] pr-[8px] pl-[14px]
-    ease-in transition-all duration-100 text-black
-    '>
-        <div>
-          <AiOutlineMenu />
-        </div>
-        <div className='ml-[14px]'>
+        h-[48px] rounded-full flex items-center gap-2 border-[1px] border-[#c6c5c5] p-1
+        ease-in transition-all duration-100 text-black
+      '>
+        {toggleHamber && (
+          <div>
+            <AiOutlineMenu />
+          </div>
+        )}
+        <div className=''>
           {userInfo ? (
             <span className='flex justify-center items-center bg-black text-white h-9 w-9 text-sm rounded-full'>
               {/* hàm shift lấy phần tử đầu tiên trong mảng */}

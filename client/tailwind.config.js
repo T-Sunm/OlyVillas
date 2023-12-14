@@ -2,18 +2,19 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    
+
     extend: {
       colors: {
-      "secondaryText": "rgb(141, 49, 49)",
-      "primaryText": "#1f3e72",
-      "airbnb-theme-color":"#FF385C",
-      "airbnb-theme-color": "#FF385C",
-      "airbnb-light-black": "#222222",
-      "airbnb-light-gray": "#717171",
-    },},
-    screens:{
-      'phone':'320px',
+        "secondaryText": "rgb(141, 49, 49)",
+        "primaryText": "#1f3e72",
+        "airbnb-theme-color": "#FF385C",
+        "airbnb-theme-color": "#FF385C",
+        "airbnb-light-black": "#222222",
+        "airbnb-light-gray": "#717171",
+      },
+    },
+    screens: {
+      'phone': '320px',
       'tablet': '640px',
       // => @media (min-width: 640px) { ... }
 

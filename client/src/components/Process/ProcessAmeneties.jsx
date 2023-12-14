@@ -19,11 +19,11 @@ const ProcessAmeneties = () => {
     }
     return (
         <div className='flex flex-col items-center justify-center h-[70vh]'>
-            <div className='flex flex-col gap-3'>
-                <h2 className='font-semibold text-4xl'>
+            <div className='flex flex-col gap-3 phone:px-3 '>
+                <h2 className='font-semibold laptop:text-[32px] phone:text-[26px]'>
                     Tell guests what your place has to offer
                 </h2>
-                <p>You can add more ameneties after you publish your listing</p>
+                <p className='text-[#717171]'>You can add more ameneties after you publish your listing</p>
             </div>
             <div className='flex flex-col gap-4 max-h-[65vh] overflow-auto no-scrollbar py-4'>
                 {
@@ -39,7 +39,7 @@ const ProcessAmeneties = () => {
                                     Do you have any safety items?
                                 </span>
                             )}
-                            <div className='grid grid-cols-3 gap-5 '>
+                            <div className='grid tablet:grid-cols-3 phone:grid-cols-2 phone:px-3 gap-5 '>
                                 {data.map((amenities) => (
                                     <button
                                         onClick={() => placeAmeneties[amenities.group].includes(amenities.name) ?

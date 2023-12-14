@@ -30,12 +30,12 @@ const Photos = () => {
 
     return (
         <>
-            <div className='flex flex-col h-[70vh] gap-5 items-center justify-center'>
-                <div >
-                    <h2 className='font-semibold text-4xl'>
+            <div className='flex flex-col h-[70vh] gap-5 items-center justify-center phone:px-3'>
+                <div className='' >
+                    <h2 className='font-semibold laptop:text-[32px] phone:text-[26px]'>
                         Add some photos of your house
                     </h2>
-                    <p>
+                    <p className='text-[#717171]'>
                         You'll need 5 photos to get started . You can add more or make changes
                     </p>
                 </div>

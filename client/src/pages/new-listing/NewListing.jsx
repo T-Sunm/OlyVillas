@@ -19,6 +19,7 @@ import { useMutation } from 'react-query'
 import { createResidency } from '../../utils/api'
 import { toast } from 'react-toastify'
 import { setDescription, setLocation, setLocationType, setMapData, setPhotos, setPlaceAmeneties, setPlaceSpace, setPlaceType, setPrice, setTitle, setUserEmail } from '../../store/slices/ProcessSlice'
+import StepTwoStarter from '../../components/Process/StepTwoStarter'
 const NewListing = () => {
     const { token: UserToken, user } = useSelector((state) => state.auth.userInfo)
     const residency = useSelector((state) => state.CreateProcess)
@@ -62,18 +63,20 @@ const NewListing = () => {
             case 6:
                 return <FloorPlan />
             case 7:
-                return <ProcessAmeneties />
+                return <StepTwoStarter />
             case 8:
-                return <Photos />
+                return <ProcessAmeneties />
             case 9:
-                return <Title />
+                return <Photos />
             case 10:
-                return <Description />
+                return <Title />
             case 11:
-                return <StepThreeStarter />
+                return <Description />
             case 12:
-                return <Price />
+                return <StepThreeStarter />
             case 13:
+                return <Price />
+            case 14:
                 return <ListingCreated />
             default:
                 return <></>
@@ -111,7 +114,7 @@ const NewListing = () => {
                         Back
                     </button>
                 )}
-                {step < 12 ? (
+                {step < 13 ? (
                     <>
                         {step !== 0 ? (
                             <button
