@@ -30,6 +30,11 @@ import LoginSecurity from "./svg/Settings/LoginSecurity";
 import LoginandSecurity from "./pages/LoginSecurity/LoginandSecurity";
 import Login from "./pages/LoginSecurity/Login/Login";
 import LoginRequest from "./pages/LoginSecurity/LoginRequest/LoginRequest";
+import Insights from "./pages/Insights/Earnings";
+import LayoutHosting from "./components/Layout/LayoutHosting";
+import Progress_Insights from "./components/Progress-Insights/Progress_Insights";
+import Earnings from "./pages/Insights/Earnings";
+import Reviews from "./pages/Insights/Reviews";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -89,6 +94,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/hosting",
+        element: <LayoutHosting />,
         children: [
           {
             index: true,
@@ -97,6 +103,21 @@ const router = createBrowserRouter([
           {
             path: "/hosting/listings",
             element: <Listing />
+          },
+          {
+            path: "/hosting/insights",
+            element: <Progress_Insights />,
+            children: [
+              {
+                index: true,
+                path: "/hosting/insights/earnings",
+                element: <Earnings />
+              },
+              {
+                path: "/hosting/insights/reviews",
+                element: <Reviews />
+              }
+            ]
           }
         ]
       },

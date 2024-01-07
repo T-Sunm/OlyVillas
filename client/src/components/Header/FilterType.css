@@ -1,4 +1,3 @@
-
 #filterType::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     background-color: #F5F5F5;
@@ -15,7 +14,7 @@
 }
 
 .wrap-content::before,
-.wrap-content::after{
+.wrap-content::after {
     position: absolute;
     content: "";
     height: 60px;
@@ -23,12 +22,45 @@
     background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 100%);
     z-index: 2;
 }
-.wrap-content::before{
+
+.wrap-content::before {
     top: 0;
     left: 7;
 }
+
 .wrap-content::after {
     top: 0;
     right: 0;
     transform: rotateZ(180deg);
+}
+
+/* custom hover icon Filter  */
+
+.iconFilter {
+    position: relative;
+}
+
+.iconFilter:after {
+    content: "";
+    position: absolute;
+    background-color: #ff3c78;
+    height: 2px;
+    width: 0;
+    left: 0;
+    bottom: 10px;
+    transition: 0.3s;
+}
+
+.iconFilter:hover:after {
+    width: 100%;
+}
+
+.iconFilterActive::after {
+    content: "";
+    position: absolute;
+    background-color: #ff3c78;
+    height: 2px;
+    width: 100%;
+    left: 0;
+    bottom: 10px;
 }

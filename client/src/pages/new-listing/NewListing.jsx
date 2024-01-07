@@ -20,16 +20,23 @@ import { createResidency } from '../../utils/api'
 import { toast } from 'react-toastify'
 import { setDescription, setLocation, setLocationType, setMapData, setPhotos, setPlaceAmeneties, setPlaceSpace, setPlaceType, setPrice, setTitle, setUserEmail } from '../../store/slices/ProcessSlice'
 import StepTwoStarter from '../../components/Process/StepTwoStarter'
+import { AnimatePresence, motion } from 'framer-motion'
+import LoadingDots from '../../components/Loading/LoadingDots'
+import { Link } from 'react-router-dom'
+import { queryClient } from '../../api/Residency'
 const NewListing = () => {
     const { token: UserToken, user } = useSelector((state) => state.auth.userInfo)
     const residency = useSelector((state) => state.CreateProcess)
 
     const step = useSelector((state) => state.StepSlice.step)
+    const Validstep = useSelector((state) => state.StepSlice.validSteps)
+
     const dispatch = useDispatch()
     const { mutate, isLoading } = useMutation({
         mutationFn: () => createResidency(residency, UserToken),
         onError: ({ response }) => toast.error(response.data.message, { position: "bottom-right" }),
         onSuccess: () => {
+            queryClient.invalidateQueries(['allProperties'])
             toast.success("Added Successfully", { position: "bottom-right" })
             dispatch(setLocationType(undefined))
             dispatch(setPlaceType(undefined))
@@ -86,59 +93,100 @@ const NewListing = () => {
         dispatch(setStepDecrease())
     }
     const handleNext = () => {
-        dispatch(setStepIncrease())
+
+        if (!isLoading) {
+            dispatch(setStepIncrease())
+        }
     }
-    const handleSubmit = () => {
-        mutate()
-        dispatch(setStepIncrease())
+    const handleSubmit = async () => {
+        await mutate()
+        if (isLoading) {
+            dispatch(setStepIncrease())
+        }
     }
     return (
-        <div className='grid h-[100vh]'>
-            <div className='flex justify-between px-20 items-center'>
-                <img src='./logo2.png' />
-                {step <= 13 && (
-                    <button className='border border-gray-300 
+        <AnimatePresence>
+            <motion.div
+                initial={{
+                    opacity: 0
+                }}
+                animate={{
+                    opacity: 1
+                }}
+                transition={{
+                    duration: 1
+                }}
+                className='grid h-[100vh]'>
+                <div className='flex justify-between px-20 items-center'>
+                    <Link to={"/all-properties"}>
+                        <img src='./logo2.png' />
+                    </Link>
+                    {step <= 13 && (
+                        <button className='border border-gray-300 
                 px-5 py-2 rounded-full font-semibold 
                 hover:border-gray-700 cursor-pointer'>
-                        Save & Exit
-                    </button>
-                )
-                }
-            </div>
-            {getComponent()}
-            <div className={`border-t-4 border-t-gray-300 flex items-center px-20 ${step > 0 ? "justify-between" : "justify-end"} `}>
-                {step >= 1 && (
-                    <button
-                        onClick={handlePrevious}
-                        className='py-3 px-10 text-airbnb-light-black underline hover:bg-gray-200 font-medium rounded-md cursor-pointer '>
-                        Back
-                    </button>
-                )}
-                {step < 13 ? (
-                    <>
-                        {step !== 0 ? (
+                            Save & Exit
+                        </button>
+                    )}
+                </div>
+                <motion.div
+                    initial={{
+                        opacity: 0
+                    }}
+                    animate={{
+                        opacity: 1
+                    }}
+                    transition={{
+                        duration: 1
+                    }}
+                >
+                    {getComponent()}
+                </motion.div>
+
+                {step <= 13 && (
+                    <div className={`border-t-4 border-t-gray-300 flex items-center px-20 ${step > 0 ? "justify-between" : "justify-end"} `}>
+                        {step >= 1 && step <= 13 && (
                             <button
-                                onClick={handleNext}
-                                className='bg-[#222222] py-3 px-5 text-white font-medium rounded-md cursor-pointer'>
-                                Next
-                            </button>
-                        ) : (
-                            <button
-                                onClick={handleNext}
-                                className='bg-airbnb-theme-color py-3 px-5 text-white font-medium rounded-md cursor-pointer'>
-                                Get Started
+                                onClick={handlePrevious}
+                                className='py-3 px-10 text-airbnb-light-black underline hover:bg-gray-200 font-medium rounded-md cursor-pointer '>
+                                Back
                             </button>
                         )}
-                    </>
-                ) : (
-                    <button
-                        className='bg-airbnb-theme-color py-3 px-5 text-white font-medium rounded-md cursor-pointer'
-                        onClick={handleSubmit}>
-                        Submit
-                    </button>
+                        {step < 13 && (
+                            <>
+                                {step !== 0 ? (
+                                    <button
+                                        disabled={!Validstep[step]}
+                                        onClick={handleNext}
+                                        className='bg-[#222222] py-3 px-5 text-white font-medium rounded-md cursor-pointer disabled:opacity-80'>
+                                        Next
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={handleNext}
+                                        className='bg-airbnb-theme-color py-3 px-5 text-white font-medium rounded-md cursor-pointer'>
+                                        Get Started
+                                    </button>
+                                )}
+                            </>
+                        )
+                        }
+                        {step === 13 && (
+                            <button
+                                className='bg-airbnb-theme-color py-3 px-5 text-white font-medium rounded-md cursor-pointer'
+                                onClick={handleSubmit}>
+                                {isLoading ? (
+                                    <LoadingDots />
+                                ) : (
+                                    <span>Submit</span>
+                                )}
+                            </button>
+                        )}
+                    </div>
                 )}
-            </div>
-        </div>
+            </motion.div>
+        </AnimatePresence>
+
     )
 }
 

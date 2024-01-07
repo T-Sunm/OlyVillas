@@ -8,7 +8,7 @@ const useEditProp = () => {
 
 
     const stateEdit = useSelector((state) => {
-        const { preLocationData, preMapData, ...rest } = state.EditProp;
+        const { preLocationData, preMapData, photos, ...rest } = state.EditProp;
         return rest;
     });
     const { mutate: mutateEditResidency } = useMutation({

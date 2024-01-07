@@ -12,6 +12,14 @@ const MenuProfile = ({ isOpen, setToggle }) => {
 
   const menuProItemsAuthenticated = [
     {
+      title: "Profile",
+      font: "font-semibold",
+      Link: "/account-settings",
+      callBack: () => {
+        setToggle(false)
+      }
+    },
+    {
       title: "Whishlists",
       font: "font-semibold",
       Link: "/whishlists",
@@ -43,6 +51,7 @@ const MenuProfile = ({ isOpen, setToggle }) => {
       title: "Log out ",
       callBack: () => {
         setToggle(false)
+        navigate('/all-properties')
         localStorage.clear()
         dispatch(setAuthModalFalse())
         dispatch(setUserInfo(null))
@@ -94,7 +103,6 @@ const MenuProfile = ({ isOpen, setToggle }) => {
     //cả hai sự kiện sẽ được kích hoạt khi sự kiện trên phần tử con xảy ra, trừ khi bạn sử dụng stopPropagation()
     e.stopPropagation();
     callBack();
-
   }
 
 
@@ -106,7 +114,7 @@ const MenuProfile = ({ isOpen, setToggle }) => {
             {userInfo ? (
               <ul>
                 {menuProItemsAuthenticated.map((menuProItem, index) => (
-                  index !== 3 ? (
+                  index !== 4 ? (
                     <li className={`py-[12px] px-[16px] w-[240px] ${menuProItem.font}`}>
                       <Link
                         to={menuProItem?.Link}
@@ -127,7 +135,7 @@ const MenuProfile = ({ isOpen, setToggle }) => {
             ) : (
               <ul>
                 {menuProItemsNotAuthenticated.map((menuProItem, index) => (
-                  index !== 2 ? (
+                  index !== 3 ? (
                     <li
                       // hàm handleClick này giúp mỗi khi nhấn vào là ẩn menuProfile đi
                       onClick={(e) => handleClick(e, menuProItem.callBack)}

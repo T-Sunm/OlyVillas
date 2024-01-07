@@ -1,28 +1,60 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setMapData } from '../../store/slices/ProcessSlice'
 import FormInput from '../Input/FormInput/FormInput'
-
+import { motion } from 'framer-motion'
+import { basic } from '../../utils/common'
+import { setValidStep } from '../../store/slices/StepSlice'
 
 const PlaceDetails = () => {
     const mapData = useSelector((state) => state.CreateProcess.mapData)
     const dispatch = useDispatch()
 
-    const handleChange = (name, value) => {
-        dispatch(setMapData({ ...mapData, [name]: value }))
-    }
+    const [place, setPlace] = useState(mapData?.place !== "" ? (mapData?.place + ", " + mapData?.region) : mapData?.place)
 
+    function handleChange(name, value) {
+        dispatch(setMapData({ ...mapData, [name]: value }))
+        console.log(value)
+    }
+    const handleChangePlace = (name, value) => {
+        setPlace(value)
+        dispatch(setMapData({ ...mapData, [name]: place }))
+        console.log(mapData)
+    }
+    useEffect(() => {
+        if (mapData["country"] === "" || mapData["street_address"] === "" || mapData["place"] === "") {
+            dispatch(setValidStep({ step: 5, status: false }));
+            return
+        }
+        dispatch(setValidStep({ step: 5, status: true }));
+    }, [mapData])
     const [item, setItem] = useState('')
     return (
-        <div className='flex flex-col justify-center items-center gap-2 w-full h-[70vh]'>
-            <div className='flex flex-col gap-3'>
-                <h2 className='font-semibold laptop:text-[32px] phone:text-[26px]'>Confirm your address</h2>
-                <p className='text-[#717171]'>Your address is only shared with guests after they've made
+        <motion.div
+            variants={basic(0, 1)}
+            initial="hidden"
+            animate="visible"
+            className='flex flex-col justify-center items-center gap-2 w-full h-[70vh]'>
+            <motion.div className='flex flex-col gap-3'>
+                <motion.h2
+                    variants={basic(20, 0.5, 0.2)}
+                    initial="hidden"
+                    animate="visible"
+                    className='font-semibold laptop:text-[32px] phone:text-[26px]'>Confirm your address</motion.h2>
+                <motion.p
+                    variants={basic(0, 2, 0.4)}
+                    initial="hidden"
+                    animate="visible"
+                    className='text-[#717171]'>Your address is only shared with guests after they've made
                     a reservation
-                </p>
-            </div>
+                </motion.p>
+            </motion.div>
             <div className='flex flex-col gap-3 w-full h-full overflow-auto no-scrollbar pb-20 pt-5  items-center'>
-                <div className={`laptop:w-[30%] tablet:w-[50%]     ${item === "country" ? '' : 'border border-t-[#b0b0b0] border-x-[#b0b0b0] rounded-lg'}`}>
+                <motion.div
+                    variants={basic(20, 0.5, 0.2)}
+                    initial="hidden"
+                    animate="visible"
+                    className={`laptop:w-[30%] tablet:w-[50%] ${item === "country" ? '' : 'border border-t-[#b0b0b0] border-x-[#b0b0b0] rounded-lg'}`}>
                     <FormInput
                         isListing
                         name="country"
@@ -33,8 +65,12 @@ const PlaceDetails = () => {
                         item={item}
                         setItem={setItem}
                     />
-                </div>
-                <div className={`flex flex-col laptop:w-[30%] tablet:w-[50%]  border border-t-[#b0b0b0] border-x-[#b0b0b0]  rounded-lg overflow-hidden`}>
+                </motion.div>
+                <motion.div
+                    variants={basic(-20, 0.5, 0.2)}
+                    initial="hidden"
+                    animate="visible"
+                    className={`flex flex-col gap-[0.5px] laptop:w-[30%] tablet:w-[50%]  border border-t-[#b0b0b0] border-x-[#b0b0b0]  rounded-lg overflow-hidden`}>
                     <FormInput
                         isListing
                         title="Street address"
@@ -54,6 +90,7 @@ const PlaceDetails = () => {
                         item={item}
                         setItem={setItem}
                         value={mapData?.address_extra}
+                        notCheckValid={true}
                     />
                     <FormInput
                         isListing
@@ -64,16 +101,18 @@ const PlaceDetails = () => {
                         value={mapData?.locality}
                         item={item}
                         setItem={setItem}
+                        notCheckValid={true}
                     />
                     <FormInput
                         isListing
                         title="Province / state / territory (if applicable)"
                         name="place"
-                        setValue={handleChange}
+                        setValue={handleChangePlace}
                         type='text'
-                        value={mapData?.region ? mapData?.place + ", " + mapData?.region : mapData?.place}
+                        value={place}
                         item={item}
                         setItem={setItem}
+                        notCheckValid={true}
                     />
                     <FormInput
                         isListing
@@ -84,11 +123,12 @@ const PlaceDetails = () => {
                         value={mapData?.postcode}
                         item={item}
                         setItem={setItem}
+                        notCheckValid={true}
                     />
 
-                </div>
+                </motion.div>
             </div>
-        </div>
+        </motion.div>
     )
 }
 

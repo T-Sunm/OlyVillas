@@ -33,21 +33,22 @@ const FilterTypes = () => {
 
   return (
     < div className='flex gap-[50px] place-items-center mx-auto'>
-      <div className='wrap-content relative w-[80vw]'>
+      <div className='wrap-content relative laptop:w-[80vw] phone:w-[100vw]'>
         <div
           ref={arrowLeft}
           onClick={() => scrollLeft()}
           className='absolute w-[26px] h-[26px] top-[30%] left-4 z-10 border-[0.5px] justify-center place-items-center border-[black]/30 rounded-full ' style={{ display: "none" }}>
           <IoIosArrowBack />
         </div>
-        <div className=' overflow-y-hidden mt-3 ml-[30px] relative' id='filterType' ref={iconFiltersRef} >
-          <div className='flex gap-[42px] h-full' >
+        <div className=' overflow-y-hidden no-scrollbar mt-3 ml-[30px] relative' id='filterType' ref={iconFiltersRef} >
+          <div className='flex gap-[40px] h-full'>
             {iconBnbs.map((iconBnb, index) => (
               <div
                 onClick={() => setSelectedIcon(index)}
-                key={index} className={`w-[auto] flex flex-col items-center justify-between h-15 cursor-pointer p-[10px] rounded-[10px] hover:bg-[pink] ${selectedIcon === index ? "bg-[pink] " : ""}`}>
+                key={index}
+                className={`iconFilter flex flex-col items-center justify-between h-15 cursor-pointer p-[10px] rounded-[10px] `}>
                 {iconBnb.icon}
-                <div className={`text-[12px] font-medium break-keep whitespace-nowrap ${selectedIcon === index ? "border-b-[1px] border-[black] " : ""}`}>
+                <div className={`text-[12px] font-medium break-keep whitespace-nowrap ${selectedIcon === index ? "iconFilterActive " : ""}`}>
                   {iconBnb.name}
                 </div>
               </div>
@@ -57,17 +58,20 @@ const FilterTypes = () => {
         <div
           ref={arrowRight}
           onClick={() => scrollRight()}
-          className='absolute w-[26px] h-[26px] top-[30%] right-0 z-10 border-[0.5px] flex justify-center place-items-center border-[black]/30 rounded-full'>
+          className='absolute w-[26px] h-[26px] top-[30%] laptop:right-0 phone:right-4 z-10 border-[0.5px] flex justify-center place-items-center border-[black]/30 rounded-full'>
           <IoIosArrowForward />
         </div>
       </div>
-      <div
-        className='w-[20vm] h-[60px] border-[1px] border-[#DDDDDD] rounded-[12px] py-[7px] flex place-items-center'>
-        <div className='flex font-semibold place-items-center px-[16px] gap-[8px]'>
-          <div><GiSettingsKnobs /></div>
-          <div className='text-[14px]'>Filters</div>
+      <div className='phone:hidden laptop:block'>
+        <div
+          className='w-[20vm] h-[60px] border-[1px] border-[#DDDDDD] rounded-[12px] py-[7px] flex place-items-center '>
+          <div className='flex font-semibold items-center justify-center px-[16px] gap-[8px]'>
+            <div><GiSettingsKnobs /></div>
+            <div className='text-[14px]'>Filters</div>
+          </div>
         </div>
       </div>
+
     </div>
   )
 }

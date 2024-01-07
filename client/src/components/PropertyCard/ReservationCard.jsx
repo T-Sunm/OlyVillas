@@ -11,7 +11,7 @@ import 'swiper/css/navigation';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 
-const ReservationCard = ({ card, number, reservation, onActionAccept }) => {
+const ReservationCard = ({ card, number, reservation, onActionAccept, onCancelAccept, onAction3 }) => {
 
     const navigate = useNavigate()
 
@@ -20,6 +20,17 @@ const ReservationCard = ({ card, number, reservation, onActionAccept }) => {
         onActionAccept(reservation.id)
         console.log(reservation.id)
     }, [reservation])
+
+    const handleCancel = useCallback((e) => {
+        e.stopPropagation();
+        onCancelAccept(reservation.id)
+    }, [reservation])
+
+    const handleViewDetail = useCallback((e, id) => {
+        e.stopPropagation();
+        onAction3(id)
+
+    }, [onAction3])
 
     const revervationDate = useMemo(() => {
         if (!reservation) {
@@ -72,8 +83,8 @@ const ReservationCard = ({ card, number, reservation, onActionAccept }) => {
                     onClick={() => navigate(`../properties/${card.id}`)}
                     className='flex justify-between'>
                     <div className='flex flex-col'>
-                        <span className='break-all col-span-3 font-semibold'>Ngũ hành sơn , Vietnam</span>
-                        <span className='col-span-3 text-[#717171]'>{card.locationType.name} views</span>
+                        <span className='break-all col-span-3 font-semibold'>{card.mapData?.region ? card?.mapData?.region + ", " + card?.mapData?.country : card?.mapData?.place + ", " + card?.mapData?.country}</span>
+                        <span className='col-span-3 text-[#717171]'>{card?.locationType?.name} views</span>
                         {revervationDate && (
                             <span className='col-span-3 text-[#717171]'>{revervationDate}</span>
                         )}
@@ -82,11 +93,11 @@ const ReservationCard = ({ card, number, reservation, onActionAccept }) => {
                             <span className='font-semibold'>{price}$</span> night
                         </span>
                     </div>
-                    <span className='flex'>{card.star} <AiFillStar /></span>
+                    <span className='flex'>{card?.star} <AiFillStar /></span>
                 </div>
                 {reservation.Status === "Pending" && (
                     <div className='grid grid-cols-2 gap-1'>
-                        <button className='bg-airbnb-light-black text-white py-1 flex justify-center rounded-[10px]'>
+                        <button onClick={handleCancel} className='bg-airbnb-light-black text-white py-1 flex justify-center rounded-[10px]'>
                             Cancel
                         </button>
                         <button onClick={handleAccept} className='bg-airbnb-theme-color text-white py-1 flex justify-center rounded-[10px]'>
@@ -95,6 +106,9 @@ const ReservationCard = ({ card, number, reservation, onActionAccept }) => {
                     </div>
 
                 )}
+                <button onClick={(e) => handleViewDetail(e, reservation.id)} className='bg-airbnb-theme-color text-white py-1 flex justify-center rounded-[10px]'>
+                    View details reservation
+                </button>
             </div>
         </div>
     )

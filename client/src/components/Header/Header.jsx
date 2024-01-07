@@ -11,7 +11,6 @@ import Profile from "../Profile/Profile";
 const Header = () => {
   const [menuOpened, setMenuOpened] = useState(false);
   const headerColor = useHeaderColor();
-  const { loginWithRedirect, isAuthenticated, user, logout } = useAuth0()
 
   return (
     <section className="h-wrapper" style={{ background: headerColor }}>
@@ -41,18 +40,7 @@ const Header = () => {
             <NavLink to={"/all-properties"}>
               Properties
             </NavLink>
-            <a href="mailto:zainkeepscode@gmail.com">Contact</a>
-            {!isAuthenticated ? (
-              <button className="button" onClick={loginWithRedirect}>
-                Login
-              </button>
-            ) : (
-              <div className="text-black">
-                <Profile />
-              </div>
-            )}
-
-
+            <a href="">Contact</a>
           </div>
         </OutsideClickHandler>
 

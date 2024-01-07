@@ -18,6 +18,7 @@ import Dryer from "../svg/ameneties/Dryer";
 import EVcharge from "../svg/ameneties/EVcharge";
 import Elevator from "../svg/ameneties/Elevator";
 import EssBedandlau from "../svg/ameneties/EssBedandlau";
+import ExPilBlank from "../svg/ameneties/ExPilBlank";
 import Hairdryer from "../svg/ameneties/Hairdryer";
 import Hangers from "../svg/ameneties/Hangers";
 import Heating from "../svg/ameneties/Heating";
@@ -126,4 +127,5 @@ export const SvgAllAmenities = [
     { name: "Single level home", svgPath: <SingleLevelHome />, group: "ParkingandFacilities" },
     { name: "Sound system", svgPath: <Sound />, group: "Entertainment" },
     { name: "Waterfront", svgPath: <Waterfront />, group: "LocationFeatures" },
+    { name: "Extra pillows and blankets", svgPath: <ExPilBlank />, group: "BedroomandLaundry" },
 ]

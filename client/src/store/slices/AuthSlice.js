@@ -35,3 +35,5 @@ export const authSlice = createSlice({
 })
 export const { setAuthModalFalse, setAuthModalTrue, setToggleModal, setUserInfo, setFavResidenciesID } = authSlice.actions
 export default authSlice.reducer
+
+export const selectCurrentUser = (state) => state.auth.userInfo

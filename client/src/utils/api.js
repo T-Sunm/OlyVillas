@@ -52,9 +52,11 @@ export const createResidency = async (data, token) => {
         throw error
     }
 }
-export const getAllProperties = async (params) => {
+export const getAllProperties = async (params = {}) => {
 
     const { isOpen, ...searchWithoutIsOpen } = params;
+
+    console.log(searchWithoutIsOpen)
 
     try {
         const response = await api.post("user/getResidencies", searchWithoutIsOpen)

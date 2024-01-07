@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { deleteReservation, getReservation } from '../../utils/api'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useSelector } from 'react-redux'
@@ -8,11 +8,14 @@ import PropertyCardmain from '../../components/PropertyCard/PropertyCardmain'
 import Navigation from '../../components/Header/Navigation'
 import { queryClient } from '../../api/Residency'
 import { createRating } from '../../api/Rating'
+import { ViewDetailsReservation } from '../../api/Reservation'
+import ReservationDetails from '../../components/ReservationDetails/ReservationDetails'
 
 const Reservations = () => {
 
     const { user } = useSelector((state) => state.auth.userInfo)
-
+    const [toggle, setToggle] = useState(false)
+    const [detailReservation, setDetailReservation] = useState()
     const params = {
         userId: user.id
     };
@@ -20,10 +23,10 @@ const Reservations = () => {
     const { data: dataReservation, isLoadingReservation, isError: ReservationError } = useQuery({
         queryKey: ["reservations", user.id],
         queryFn: () => getReservation(params),
-        refetchOnWindowFocus: false
+        refetchOnWindowFocus: false,
+        refetchOnMount: false, // Do not refetch when the component mounts
+        staleTime: Infinity, // Never consider the data stale
     })
-
-    console.log(dataReservation)
 
     const { mutate: mutateCancelReservation } = useMutation({
         mutationFn: (id) => deleteReservation(id),
@@ -31,6 +34,7 @@ const Reservations = () => {
         onSuccess: () => {
             toast.success('Reservation cancelled')
             queryClient.invalidateQueries({ queryKey: ["reservations", user.id] })
+            queryClient.invalidateQueries({ queryKey: ["getEarnings"] })
             window.location.reload();
         }
     })
@@ -43,6 +47,13 @@ const Reservations = () => {
             window.location.reload();
         }
     })
+
+    const getDetailsReservation = async (reservationId) => {
+        const detailsReser = await ViewDetailsReservation(reservationId)
+        setDetailReservation(detailsReser)
+        setToggle(true)
+        console.log(detailReservation)
+    }
 
     const FilteReservation = useMemo(() => {
         if (dataReservation) {
@@ -74,6 +85,7 @@ const Reservations = () => {
                 tablet:gap-4
                 phone:gap-3
                 mt-[20px]'>
+
                         {
                             FilteReservation.map((card, i) => (
                                 <PropertyCardmain
@@ -83,12 +95,16 @@ const Reservations = () => {
                                     reservation={card}
                                     onAction={mutateCancelReservation}
                                     onAction2={mutateRating}
+                                    onAction3={getDetailsReservation}
                                 />
                             ))
                         }
                     </div>
                 )}
             </div>
+            {toggle && (
+                <ReservationDetails data={detailReservation} setToggle={setToggle} />
+            )}
         </>
     )
 }

@@ -63,7 +63,13 @@ export const getAllResidencies = asyncHandler(async (req, res) => {
 
   let query = {}
 
-  const { placeSpace, mapData, startDate, endDate } = req.body
+
+  const { placeSpace, mapData, startDate, endDate, authorEmail } = req.body
+
+
+  if (authorEmail) {
+    query.userEmail = authorEmail
+  }
 
   if (startDate && endDate) {
     query.NOT = {
@@ -92,6 +98,8 @@ export const getAllResidencies = asyncHandler(async (req, res) => {
       }
     }
   }
+
+
 
   try {
     const residencies = await prisma.residency.findMany({

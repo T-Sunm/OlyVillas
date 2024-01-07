@@ -46,14 +46,14 @@ const ListingAmenties = ({ amenties }) => {
                         </div>
                     ))}
                 </div>
-                {allAmenities > 10 && (
+                {allAmenities.length > 10 && (
                     <button onClick={() => setToggle(true)} className='py-[13px] px-[23px] border border-black mt-[24px] rounded-lg font-semibold '>
                         Show all {allAmenities.length} ameneties
                     </button>
                 )}
 
             </div>
-            {toggle && allAmenities > 10 && (
+            {toggle && allAmenities.length > 10 && (
                 <ListingAmenitiesDetails amenties={amenties} setToggle={setToggle} />
             )}
         </div>

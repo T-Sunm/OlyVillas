@@ -1,4 +1,5 @@
 import React from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const Overview = () => {
 
@@ -23,12 +24,46 @@ const Overview = () => {
     return (
         <div className='desktop:h-[90%] px-32 phone:px-3'>
             <div className='flex desktop:flex-row laptop:flex-row tablet:flex-row phone:flex-col items-center justify-between gap-20 phone:gap-5'>
-                <div>
+                <motion.div
+                    initial={{
+                        opacity: 0,
+                        x: 100
+                    }}
+                    animate={{
+                        opacity: 1,
+                        x: 0
+                    }}
+                    exit={{
+                        opacity: 0,
+                        x: 100
+                    }}
+                    transition={{
+                        duration: 1,
+                        ease: 'backInOut'
+                    }}
+                >
                     <span className='tablet:text-5xl text-airbnb-light-black font-semibold phone:font-medium phone:text-[36px]'>
                         {mainTitle}
                     </span>
-                </div>
-                <div className='flex flex-col gap-16 '>
+                </motion.div>
+                <motion.div
+                    initial={{
+                        opacity: 0,
+                        x: -100
+                    }}
+                    animate={{
+                        opacity: 1,
+                        x: 0
+                    }}
+                    exit={{
+                        opacity: 0,
+                        x: -100
+                    }}
+                    transition={{
+                        duration: 1,
+                        ease: 'backInOut'
+                    }}
+                    className='flex flex-col gap-16 '>
                     {data.map((step, i) => (
                         <div key={i} className='flex items-center justify-start gap-6 phone:items-start'>
                             <div className='desktop:text-2xl laptop:text-2xl tablet:text-2xl
@@ -51,9 +86,10 @@ const Overview = () => {
                             </div>
                         </div>
                     ))}
-                </div>
+                </motion.div>
             </div>
         </div>
+
     )
 }
 

@@ -13,6 +13,7 @@ import { toast } from 'react-toastify'
 import useProperty from '../../hooks/useProperty'
 import Rating2 from '../../components/Rating/Rating2'
 import Rating from '../../components/Rating/Rating'
+import { queryClient } from '../../api/Residency'
 
 const Property = () => {
 
@@ -26,7 +27,13 @@ const Property = () => {
 
     const { data, isLoading, isError } = useProperty(propertyId)
 
-    const { data: dataReservation, isLoadingReservation, isError: ReservationError } = useQuery(["reservation", propertyId], () => getReservation(params))
+    const { data: dataReservation, isLoadingReservation, isError: ReservationError } = useQuery(["reservation", propertyId],
+        () => getReservation(params),
+        {
+            refetchOnWindowFocus: false,
+            refetchOnMount: false, // Do not refetch when the component mounts
+        }
+    )
 
     const { tripInfo, price, startDate, endDate } = useSelector((state) => state.reservation)
 
@@ -37,12 +44,14 @@ const Property = () => {
         mutationFn: () => createReservation(userInfo.user.id, data.id, tripInfo, price, startDate, endDate),
         onError: ({ response }) => toast.error(response.data.message, { position: "bottom-right" }),
         onSuccess: () => {
+            queryClient.invalidateQueries(["reservations"])
             toast.success("Added Successfully", { position: "bottom-right" })
             dispatch(setResidencyId(undefined))
             dispatch(setTripInfo({}))
             dispatch(setPrice(0))
             dispatch(setStartDate(undefined))
             dispatch(setEndDate(undefined))
+            window.location.reload();
         }
 
     })
@@ -89,7 +98,7 @@ const Property = () => {
                             </div>
                             <ListingPhotos photos={data.photos} />
                             <div className='flex' >
-                                <div className='flex flex-col gap-3 w-[58.333333333333336%]'>
+                                <div className='flex flex-col gap-3 w-[58.333333333333336%] h-auto'>
                                     <div className='flex justify-between'>
                                         <h3 className='text-2xl font-semibold'>
                                             {data?.placeType.type}{""} {data.locationType.name} {" in"} {data?.mapData?.locality + ", " + data?.mapData?.place + ", " + data?.mapData?.region + ", " + data?.mapData?.country}
@@ -106,7 +115,7 @@ const Property = () => {
                                     <ul className='flex gap-5'>
                                         {Object.keys(data.placeSpace).map(TypeSpace => (
                                             <li key={TypeSpace} className='border border-gray-300 p-3 rounded-lg flex flex-col justify-start items-start w-32'>
-                                                <span className='text-2xl font-semibold'>{data.placeSpace[TypeSpace].quantity}</span>
+                                                <span clas qdsName='text-2xl font-semibold'>{data.placeSpace[TypeSpace].quantity}</span>
                                                 <span className='capitalize'>{data.placeSpace[TypeSpace].status} {TypeSpace}</span>
                                             </li>
                                         ))}
@@ -115,7 +124,9 @@ const Property = () => {
 
                                     <p>{data.description}</p>
                                     <ListingAmenties amenties={data.placeAmeneties} />
-                                    <LisingMap mapLocation={data?.locationData} mapData={data?.mapData} />
+                                    <div className='mb-[100px]'>
+                                        <LisingMap mapLocation={data?.locationData} mapData={data?.mapData} />
+                                    </div>
                                 </div>
                                 <div className='w-[33.33333333333333%] ml-[8.33333333333333%]' style={{ position: "-webkit-sticky" }}>
                                     <TripScheduler price={data.price} mutate={mutate} dataReservation={dataReservation} />

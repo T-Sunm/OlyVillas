@@ -3,6 +3,8 @@ import InputPersonal from '../../Input/InputPersonal/InputPersonal'
 import { formatDistanceToNow, parseISO } from 'date-fns'
 import { editPassword } from '../../../api/User'
 import { useDispatch } from 'react-redux'
+import { setUserInfo } from '../../../store/slices/AuthSlice'
+import { toast } from 'react-toastify'
 
 const Passwords = ({ updatedAt, email }) => {
 
@@ -23,11 +25,17 @@ const Passwords = ({ updatedAt, email }) => {
             localStorage.setItem("UserInfo", JSON.stringify(result))
             dispatch(setUserInfo(result))
             toast.success("Succes")
+            setCurrentPassword("")
+            setPassword("")
+            setConFirmPassword("")
         }
+        setCurrentPassword()
+        setPassword()
+        setConFirmPassword()
     }
 
     const handleMatchPass = useCallback(() => {
-        return Password !== confirmPassword || Password <= 5;
+        return Password !== confirmPassword && Password.length >= 5;
     }, [Password, confirmPassword]);
 
     const handleChangeCurrentPassword = (value) => {

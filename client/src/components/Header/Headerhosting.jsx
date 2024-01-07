@@ -16,6 +16,10 @@ const Headerhosting = () => {
         {
             Link: "/createResidency",
             title: "Create a new listings"
+        },
+        {
+            Link: "/hosting/insights/earnings",
+            title: "Insights"
         }
     ]
 

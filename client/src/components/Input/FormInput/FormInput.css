@@ -17,6 +17,18 @@
     border-bottom: 1px solid #b0b0b0;
 }
 
+.input-box.off.notValue {
+    border-radius: 4px;
+    border-bottom: 1px solid red;
+}
+
+.input-box.on.notValue {
+    position: relative;
+    z-index: 10;
+    border: 2px solid red;
+    border-radius: 4px;
+}
+
 .input-box label {
     position: absolute;
     top: 50%;
@@ -27,6 +39,10 @@
     font-weight: 500;
     pointer-events: none;
     transition: .5s;
+}
+
+.input-box.notValue label {
+    color: red
 }
 
 /*  sibling celctor , khi input đc forcus thì label sẽ nổi lên trên */

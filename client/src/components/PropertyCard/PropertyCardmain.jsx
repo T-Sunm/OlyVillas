@@ -16,7 +16,7 @@ import HeartButton from '../HeartButton/HeartButton';
 import Rating from '../Rating/Rating';
 import Rating2 from '../Rating/Rating2';
 import { FaStar } from 'react-icons/fa';
-const PropertyCardmain = ({ card, number, reservation, onAction, onAction2 }) => {
+const PropertyCardmain = ({ card, number, reservation, onAction, onAction2, onAction3 }) => {
 
     const [rating, setRating] = useState(null)
 
@@ -34,7 +34,6 @@ const PropertyCardmain = ({ card, number, reservation, onAction, onAction2 }) =>
         e.stopPropagation();
         onAction(reservation.id)
     }, [onAction])
-    console.log(userInfo)
 
     const handleRating = useCallback((e, rating) => {
         const data = {
@@ -46,6 +45,12 @@ const PropertyCardmain = ({ card, number, reservation, onAction, onAction2 }) =>
         e.stopPropagation();
         onAction2(data)
     }, [onAction2])
+
+    const handleViewDetail = useCallback((e, id) => {
+        e.stopPropagation();
+        onAction3(id)
+
+    }, [onAction3])
 
     const revervationDate = useMemo(() => {
         if (!reservation) {
@@ -123,7 +128,7 @@ const PropertyCardmain = ({ card, number, reservation, onAction, onAction2 }) =>
                 </Link>
 
                 {reservation && reservation?.Status !== "Success" && (
-                    <button onClick={handleCancel} className='bg-airbnb-theme-color text-white py-1 flex justify-center rounded-[10px]'>
+                    <button onClick={(e) => handleCancel(e)} className='bg-black text-white py-1 flex justify-center rounded-[10px]'>
                         Cancel Reservation
                     </button>
                 )}
@@ -132,6 +137,11 @@ const PropertyCardmain = ({ card, number, reservation, onAction, onAction2 }) =>
                 )}
                 {reservation && reservation.Rating.length === 1 && reservation?.Status === "Success" && (
                     <Rating stars={reservation.Rating[0].stars} />
+                )}
+                {reservation && (
+                    <button onClick={(e) => handleViewDetail(e, reservation.id)} className='bg-airbnb-theme-color text-white py-1 flex justify-center rounded-[10px]'>
+                        View details reservation
+                    </button>
                 )}
             </div>
         </div>

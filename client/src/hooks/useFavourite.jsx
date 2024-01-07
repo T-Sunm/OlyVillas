@@ -4,7 +4,6 @@ import { FavouritesResidency } from '../api/Residency'
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setFavResidenciesID, setUserInfo } from "../store/slices/AuthSlice";
-import { updateFavourites } from "../utils/common";
 const useFavourite = (ResidencyId, currentUser) => {
     const queryClient = useQueryClient();
 
@@ -21,9 +20,9 @@ const useFavourite = (ResidencyId, currentUser) => {
         mutationFn: (id) => FavouritesResidency(id, currentUser.email),
         onSuccess: () => {
             // cập nhật lên localStorage
-            dispatch(setFavResidenciesID(ResidencyId)),
-                queryClient.invalidateQueries(["allProperties"]);
-            toast.success('Success');
+            dispatch(setFavResidenciesID(ResidencyId))
+            queryClient.invalidateQueries(["allProperties"])
+            toast.success('Success')
         }
     }
     );

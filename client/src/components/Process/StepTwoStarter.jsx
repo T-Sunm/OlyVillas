@@ -1,8 +1,13 @@
 import React from 'react'
-
+import { motion } from 'framer-motion'
+import { basic } from '../../utils/common'
 const StepTwoStarter = () => {
     return (
-        <div className='tablet:px-20 tablet:h-[70vh] phone:px-3 '>
+        <motion.div
+            variants={basic(0, 1)}
+            initial="hidden"
+            animate="visible"
+            className='tablet:px-20 tablet:h-[70vh] phone:px-3 '>
             <div className='h-[100%] overflow-auto no-scrollbar'>
                 <div className='
                         phone:pt-[100px] laptop:pt-[0px]
@@ -27,7 +32,7 @@ const StepTwoStarter = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     )
 }
 

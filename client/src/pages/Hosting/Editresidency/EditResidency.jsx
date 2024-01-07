@@ -22,7 +22,7 @@ const EditResidency = () => {
         dispatch(setLocation(data.locationData))
         dispatch(setMapData(data.mapData))
         dispatch(setPlaceSpace(data.placeSpace))
-        dispatch(setPlaceAmeneties(data.placeType))
+        dispatch(setPlaceAmeneties(data.placeAmeneties))
         dispatch(setPhotos(data.photos))
         dispatch(setDescription(data.description))
         dispatch(setPrice(data.price))

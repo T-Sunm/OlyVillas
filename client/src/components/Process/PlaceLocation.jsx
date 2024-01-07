@@ -3,11 +3,23 @@ import Map, { GeolocateControl, Marker, NavigationControl } from 'react-map-gl';
 import GeocoderControl from './geocoder-control';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLocation } from '../../store/slices/ProcessSlice';
+import { motion } from 'framer-motion'
+import { basic } from '../../utils/common';
+import { setValidStep } from '../../store/slices/StepSlice';
 const PlaceLocation = () => {
     const mapboxToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
     const { lng, lat } = useSelector((state) => state.CreateProcess.locationData)
+    const mapData = useSelector((state) => state.CreateProcess.mapData)
     const dispatch = useDispatch()
     const mapRef = useRef()
+
+    useEffect(() => {
+        if (mapData === undefined) {
+            dispatch(setValidStep({ step: 4, status: false }));
+            return
+        }
+        dispatch(setValidStep({ step: 4, status: true }));
+    }, [mapData])
 
     useEffect(() => {
         if (!lng && !lat) {
@@ -24,16 +36,32 @@ const PlaceLocation = () => {
         }
     }, [])
     return (
-        <div className=' h-[70vh] phone:px-[20px] phone:gap-4 desktop:gap-10'>
+        <motion.div
+            variants={basic()}
+            initial="hidden"
+            animate="visible"
+            className=' h-[70vh] phone:px-[20px] phone:gap-4 desktop:gap-10'>
             <div className='h-[100%] overflow-auto gap-3 flex flex-col items-center justify-center'>
-                <h2 className='font-semibold laptop:text-[32px] phone:text-[26px] '>
+                <motion.h2
+                    variants={basic(20, 0.5, 0.2)}
+                    initial="hidden"
+                    animate="visible"
+                    className='font-semibold laptop:text-[32px] phone:text-[26px] '>
                     Which of these best describes your place
-                </h2>
-                <p className='text-[#717171]'>
+                </motion.h2>
+                <motion.p
+                    variants={basic(20, 0.5, 0.5)}
+                    initial="hidden"
+                    animate="visible"
+                    className='text-[#717171]'>
                     Your address is only shared with guests after they've
                     made a reservation
-                </p>
-                <div className='h-[400px] w-[100%]'>
+                </motion.p>
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 1, delay: 1 }}
+                    className='h-[400px] phone:w-[100%] laptop:w-[50%]'>
                     <Map
                         ref={mapRef}
                         initialViewState={{
@@ -58,9 +86,9 @@ const PlaceLocation = () => {
                         />
                         <GeocoderControl />
                     </Map>
-                </div>
+                </motion.div>
             </div>
-        </div>
+        </motion.div>
     )
 }
 

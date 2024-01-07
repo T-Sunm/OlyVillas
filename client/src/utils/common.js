@@ -32,3 +32,35 @@ export const updateFavourites = (id, favResidenciesID) => {
     return [...favResidenciesID, id]
   }
 }
+
+// framer motion 
+
+export const basic = (y = 0, duration = 0.8, delay = 0) => ({
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { type: 'spring', stiffness: 100, duration, delay }
+  },
+  hidden: {
+    y,
+    opacity: 0
+  }
+});
+
+export const containerVariants = {
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 0.8,
+      staggerChildren: 0.1 // mỗi child sẽ xuất hiện cách nhau 0.1 giây
+    }
+  },
+  hidden: {
+    opacity: 0
+  }
+};
+
+export const squareVariants = {
+  hidden: { y: 50, opacity: 0 },
+  visible: { y: 0, opacity: 1, transition: { type: 'spring', stiffness: 100, duration: 0.8 } }
+};

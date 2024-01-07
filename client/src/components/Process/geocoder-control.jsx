@@ -21,17 +21,18 @@ export default function GeocoderControl() {
     const longlat = coords?.geometry?.coordinates
     console.log(longlat)
     const data = {
-      landmark: coords?.text,
-      neighborhood: coords.neighborhood,
-      postcode: coords.postcode,
-      locality: coords.locality,
-      place: coords.place,
-      district: coords.district,
-      region: coords.region,
-      country: coords.country,
-      street_address: "",
+      landmark: coords?.text ? coords?.text : "",
+      neighborhood: coords?.neighborhood ? coords?.neighborhood : "",
+      postcode: coords?.postcode ? coords.postcode : "",
+      locality: coords?.locality ? coords.locality : "",
+      place: coords?.place ? coords.place : "",
+      district: coords?.properties?.address ? coords?.properties?.address : "",
+      region: coords?.region ? coords?.region : "",
+      country: coords?.country ? coords?.country : "",
+      street_address: coords?.properties?.address ? coords?.properties?.address : "",
       address_extra: ""
     }
+    console.log(coords)
     coords?.context.map((item) => {
       Object.keys(data)?.forEach((key) => {
         if (item?.id?.startsWith(key + ".")) {

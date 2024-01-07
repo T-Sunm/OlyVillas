@@ -7,7 +7,7 @@ const useProperty = (propertyId) => {
         ["allProperties", propertyId],
         () => getProperty(propertyId),
         {
-            refetchOnWindowFocus: false
+            refetchOnWindowFocus: false,
         }
     );
 

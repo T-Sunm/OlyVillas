@@ -3,23 +3,32 @@ import { your_resevation } from '../../utils/Hosting'
 import { LuCalendarCheck2 } from "react-icons/lu";
 import { useSelector } from 'react-redux';
 import { useMutation, useQuery } from 'react-query';
-import { getReservation, updateReservation } from '../../utils/api';
+import { deleteReservation, getReservation, updateReservation } from '../../utils/api';
 import ReservationCard from '../../components/PropertyCard/ReservationCard';
 import { toast } from 'react-toastify';
 import { differenceInDays, parseISO } from 'date-fns';
 import Navigation from '../../components/Header/Navigation';
 import Headerhosting from '../../components/Header/Headerhosting';
+import { queryClient } from '../../api/Residency';
+import ReservationDetails from '../../components/ReservationDetails/ReservationDetails';
+import { ViewDetailsReservation } from '../../api/Reservation';
 const Hosting = () => {
 
     const [statusReversation, setStatusReversation] = useState('Pending')
 
     const { user } = useSelector((state) => state?.auth?.userInfo)
-
+    const [detailReservation, setDetailReservation] = useState()
+    const [toggle, setToggle] = useState(false)
     const params = {
         authorEmail: user?.email
     };
 
-    const { data: dataReservation, isLoadingReservation, isError: ReservationError } = useQuery(["hosting", user?.email], () => getReservation(params))
+    const { data: dataReservation, isLoadingReservation, isError: ReservationError } = useQuery(["reservations", user?.email],
+        () => getReservation(params),
+        {
+            refetchOnWindowFocus: false,
+        }
+    )
 
     const { mutate: mutateAcceptReservation } = useMutation({
         mutationFn: (id) => updateReservation(id),
@@ -27,6 +36,19 @@ const Hosting = () => {
         onSettled: () => {
             toast.success('Reservation Accept success')
             queryClient.invalidateQueries(["hosting", user?.email])
+            queryClient.invalidateQueries(["getEarnings"])
+            window.location.reload();
+        }
+    })
+
+    const { mutate: mutateCancelReservation } = useMutation({
+        mutationFn: (id) => deleteReservation(id),
+        onError: ({ response }) => toast.error(response.data.message, { position: "bottom-right" }),
+        onSuccess: () => {
+            toast.success('Reservation cancelled')
+            queryClient.invalidateQueries({ queryKey: ["reservations"] })
+            queryClient.invalidateQueries({ queryKey: ["getEarnings"] })
+            window.location.reload();
         }
     })
 
@@ -74,14 +96,18 @@ const Hosting = () => {
 
     }, [dataReservation, statusReversation])
 
-    console.log(FilteReservation)
+    const getDetailsReservation = async (reservationId) => {
+        const detailsReser = await ViewDetailsReservation(reservationId)
+        setDetailReservation(detailsReser)
+        setToggle(true)
+        console.log(detailReservation)
+    }
 
     return (
         <>
-            <Headerhosting />
             <div className='flex flex-col gap-2 px-[80px] pt-[64px]'>
                 <h2 className='text-3xl font-medium'>
-                    Welcome back,Minh
+                    Welcome back,{user?.firstName}
                 </h2>
                 <div className='flex flex-col gap-10'>
                     <h2 className='text-2xl font-medium'>
@@ -138,13 +164,16 @@ const Hosting = () => {
                         {FilteReservation && (
                             <div className='grid grid-cols-5 gap-3'>
                                 {FilteReservation.map((Reservation, index) => (
-                                    <ReservationCard card={Reservation.Residency} number={index} reservation={Reservation} onActionAccept={mutateAcceptReservation} />
+                                    <ReservationCard card={Reservation.Residency} number={index} reservation={Reservation} onActionAccept={mutateAcceptReservation} onCancelAccept={mutateCancelReservation} onAction3={getDetailsReservation} />
                                 ))}
                             </div>
                         )}
                     </div>
                 </div>
             </div>
+            {toggle && (
+                <ReservationDetails data={detailReservation} setToggle={setToggle} />
+            )}
         </>
     )
 }

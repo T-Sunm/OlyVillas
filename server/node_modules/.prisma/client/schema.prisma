@@ -53,7 +53,7 @@ model Residency {
 model Reservation {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   userId      String   @db.ObjectId
-  ResidencyId String   @unique @db.ObjectId
+  ResidencyId String   @db.ObjectId
   tripInfo    Json
   price       Float
   Status      String
@@ -77,9 +77,9 @@ model Rating {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  Residency   Residency   @relation(fields: [ResidencyId], references: [id])
+  Residency   Residency   @relation(fields: [ResidencyId], references: [id], onDelete: Cascade)
   User        User        @relation(fields: [userId], references: [id])
-  Reservation Reservation @relation(fields: [ReservationId], references: [id])
+  Reservation Reservation @relation(fields: [ReservationId], references: [id], onDelete: Cascade)
 }
 
 model photos {
